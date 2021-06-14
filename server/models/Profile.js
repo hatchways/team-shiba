@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // values for avaialbility hours each week
-const availability_values = ["10" , "10+" , "20" , "20+" , "30" , "30+"]
+const availability_values = ["10" , "10+" , "20" , "20+" , "30" , "30+"];
 
 const profileSchema = new mongoose.Schema({
     firstname : {
@@ -42,13 +42,13 @@ const profileSchema = new mongoose.Schema({
         validate (value) {
             // checking whether the value is one of the allowed ones in availability_values array
             if (!availability_values.includes(value)) {
-                throw new Error("Please choose among the following values : " , availability_values);
+                throw new Error('Please choose among the following values : [10 , 10+ , 20 , 20+ , 30 , 30+]');
             }
         }
     }
 });
 
 
-const Profile = new mongooose.model("profile" , profileSchema);
+const Profile = new mongoose.model("profile" , profileSchema);
 
 module.exports = Profile;
