@@ -25,8 +25,8 @@ const uploadSchema = new mongoose.Schema({
   },
 });
 
-uploadSchema.methods.isValid = async (fileExtension)  => {
-  return ['jpg','png','jpeg'].includes(fileExtension);
+uploadSchema.methods.isValid =  (mimetype)  => {
+  return ['image/png', 'image/jpeg'].includes(mimetype);
 };
 
 

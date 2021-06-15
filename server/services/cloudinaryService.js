@@ -1,4 +1,5 @@
 const cloudinary = require("cloudinary").v2;
+const streamifier = require('streamifier');
 const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
 
 
@@ -12,15 +13,23 @@ class CloudinaryService{
         });
     }
 
+    
   /**
    * 
    * @param {*} file 
-   * 
+   * returns a promise
    */
-    upload = (file={}) =>{
-        cloudinary.uploader.upload("https://images.unsplash.com/photo-1588702547919-26089e690ecc",
-        { public_id: "sample_woman" }, 
-        function(error, result) {console.log(result); });
+    upload = async (buffer) => {
+        return new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
+                { public_id: "sample_woman" }, 
+              (error, result) => {
+                if (result) return resolve(result);
+                reject(error);
+              },
+            );
+            streamifier.createReadStream(buffer).pipe(uploadStream);
+          });
     }
 
     replace = (fileId, newFile) =>{

@@ -13,6 +13,23 @@ const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const uploadRouter = require("./routes/upload");
 
+/**
+ * Swagger
+ */
+//Swagger Configuration  
+const swaggerOptions = {  
+  swaggerDefinition: {  
+      info: {  
+          title:'CaninePlace',  
+          version:'1.0.0'  
+      }  
+  },  
+  apis:['routes/upload.js'],  
+} 
+const swaggerUi = require('swagger-ui-express'), swaggerJsdoc = require("swagger-jsdoc");
+const swaggerDocs = swaggerJsdoc(swaggerOptions);  
+
+
 const { json, urlencoded } = express;
 
 
@@ -37,6 +54,7 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
+app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocs));  
 
 app.use((req, res, next) => {
   req.io = io;
@@ -45,7 +63,7 @@ app.use((req, res, next) => {
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
-// app.use("/uploads", uploadRouter);
+app.use("/uploads", uploadRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")));

@@ -1,25 +1,27 @@
 const Upload = require("../models/Upload");
 const CloudinaryService = require("../services/cloudinaryService");
 const asyncHandler = require("express-async-handler");
-
 const cursor = new CloudinaryService();
 
 exports.uploadSingleFile = asyncHandler(async(req, res, next) => {
-  
-    const upload = await cursor.upload();
-    // console.log({
-    //     req
-    // })
-    // if (searchString) {
-    //   users = await User.find({
-    //     username: { $regex: searchString, $options: "i" }
-    //   });
-    // }
-  
-    if (false) {
-      res.status(404);
-      throw new Error("No users found in search");
+    const { fieldname, originalname, mimetype, buffer } = req.file;
+    const { userId } = req.body;
+    const upload = new Upload();
+    if(!upload.isValid(mimetype)){
+        res.status(400);
+        throw new Error('Invalid file type. Please upload [jpeg, png, jpg]')
     }
-  
-    res.status(200).json({ users: ["EMEKA","JPEG","MP4"] });
+    upload.file_type = mimetype;
+    upload.file_name = originalname;
+    return await cursor.upload(buffer).then( async (fileResponse) => {
+        const { secure_url } = fileResponse;
+        upload.file_url = secure_url;
+        await upload.save();
+        res.status(200).json({ upload });
+     }).catch((error)=>{
+        const { http_code, message } = error;
+        res.status(http_code);
+        throw new Error(message);
+     })
+    
   });
