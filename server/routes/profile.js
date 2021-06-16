@@ -2,14 +2,14 @@ const express = require("express");
 const router = express.Router();
 
 const {
-    postProfile,
+    createProfile,
     getProfileById,
     getProfilesList,
     updateProfileById
 } = require("../controllers/profile");
 
 // CREATE
-router.route("/").post(postProfile);
+router.route("/").post(createProfile);
 
 // READ
 router.route("/:id").get(getProfileById);
@@ -19,3 +19,4 @@ router.route("/").get(getProfilesList);
 router.route("/:id").patch(updateProfileById);
 
 module.exports = router;
+ 

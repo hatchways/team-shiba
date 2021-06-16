@@ -2,7 +2,7 @@ const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
 const profileModel = require('../models/Profile');
 
-exports.postProfile = asyncHandler(async (req, res, next) => {
+exports.createProfile = asyncHandler(async (req, res, next) => {
   const { firstname, lastname, description, availability } = req.body;
   const profile = new Profile({
     firstname,
