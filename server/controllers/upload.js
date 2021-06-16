@@ -112,12 +112,12 @@ exports.uploadSingle = asyncHandler(async(req, res, next) => {
  */
 exports.uploadMultiple = asyncHandler(async(req, res, next) => {    
     const { body, files } = req;
+    const { userId } = body;
     const errors = [];
     const uploads = [];
     const duplicates = [];
     const doMultiple = async () => { 
         for(let file of files){
-            const { userId } = body;
             const { originalname, mimetype } = file;
             const data = { userId, fileName:originalname, fileType:mimetype };
             const upload = retrieveUpload(file);
