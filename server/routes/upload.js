@@ -4,7 +4,7 @@ const protect = require("../middleware/auth");
 const multer  = require('multer');
 const fileUploader = multer();
   
-const { uploadSingleFile } = require("../controllers/upload");
+const { uploadSingle, uploadMultiple } = require("../controllers/upload");
 
 
 
@@ -14,16 +14,48 @@ const { uploadSingleFile } = require("../controllers/upload");
  *   post: 
  *     description: Upload a single file
  *     parameters: 
- *     - name: UploadFile 
+ *     - name: singleFile 
  *       description: Uploads a file
  *       in: formData 
  *       required: true 
  *       type: file 
+ *     - name: userId 
+ *       description: The profile user's id
+ *       in: formData 
+ *       required: true 
+ *       type: string 
  *     responses:  
  *       201: 
  *         description: Created  
+ *       400: 
+ *         description: Bad Request  
  *   
  */
-router.route("/single").post([fileUploader.single('UploadFile')],uploadSingleFile);
+router.route("/single").post([fileUploader.single('singleFile')],uploadSingle);
+
+/** 
+ * @swagger 
+ * /uploads/multiple: 
+ *   post: 
+ *     description: Uploads multiple files
+ *     parameters: 
+ *     - name: multiFile 
+ *       description: Uploads multiple files
+ *       in: formData 
+ *       required: true 
+ *       type: file 
+ *     - name: userId 
+ *       description: The profile user's id
+ *       in: formData 
+ *       required: true 
+ *       type: string 
+ *     responses:  
+ *       201: 
+ *         description: Created  
+ *       400: 
+ *         description: Bad Request  
+ *   
+ */
+router.route("/multiple").post([fileUploader.array('multiFile')],uploadMultiple);
 
 module.exports = router;

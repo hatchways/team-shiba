@@ -2,18 +2,23 @@ const mongoose = require("mongoose");
 
 
 const uploadSchema = new mongoose.Schema({
+
+  userId: {
+    type: String,
+    required: true,
+  },
   fileType: {
     type: String,
     required: true,
   },
   fileName: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   fileUrl: {
     type: String,
-    required: true
+    required: true,
+    unique:true
   },
   createdAt: {
     type: Date,
@@ -28,7 +33,6 @@ const uploadSchema = new mongoose.Schema({
 uploadSchema.methods.isValid =  (mimetype)  => {
   return ['image/png', 'image/jpeg'].includes(mimetype);
 };
-
 
 
 module.exports = Upload = mongoose.model("upload", uploadSchema);
