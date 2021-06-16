@@ -143,13 +143,16 @@ exports.uploadMultiple = asyncHandler(async(req, res, next) => {
         res.status(HTTP_CONSTANTS.BAD_REQUEST);
         throw new Error(message);
     }
+    let responseData = { data:[], message, hasError:!!errors.length };
     
     await bulkSave(uploads).then(({ ops }) =>{ //persist
-        res.status(HTTP_CONSTANTS.OK).json({ data:ops, message, hasError:!!errors.length });
+        responseData.data = ops;
     }).catch(error => {
-        if(duplicates.length && !uploads.length) return res.status(HTTP_CONSTANTS.OK).json({ data:duplicates, message, hasError:!!errors.length });
+        if(duplicates.length && !uploads.length) return responseData.data = duplicates;;
         throw new Error(error.message)
     });
+
+    res.status(HTTP_CONSTANTS.OK).json(responseData);
     
   });
 
