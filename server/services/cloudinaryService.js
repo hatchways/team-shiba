@@ -2,7 +2,7 @@ const cloudinary = require("cloudinary").v2;
 const streamifier = require('streamifier');
 const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
 
-
+//All methods in this class return a promise
 class CloudinaryService{
 
     constructor(){
@@ -19,13 +19,16 @@ class CloudinaryService{
    * @param {*} file 
    * returns a promise
    */
-    upload = async (buffer, options={}) => {
+    upload = async (buffer, options={ originalname:'' }) => {
         return new Promise((resolve, reject) => {
+            let { originalname } = options;
+            originalname = originalname.toLowerCase();
+            ['.jpg','.png','.jpeg'].map(ext=> originalname.endsWith(ext) && (originalname = originalname.replace(ext,'')));
             const uploadStream = cloudinary.uploader.upload_stream(
-                { public_id: options.originalname }, 
+                { public_id: originalname, folder:"teamShiba" }, 
               (error, result) => {
-                if (result) return resolve(result);
-                reject(error);
+               return result && resolve(result) || reject(error);
+               
               },
             );
             streamifier.createReadStream(buffer).pipe(uploadStream);
