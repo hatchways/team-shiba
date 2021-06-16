@@ -54,7 +54,7 @@ const setProperties = (upload, data) => {
 }
 
 /**
- * This method persists (creates or updates) an upload in the db
+ * This method persists an upload in the db
  * @param {*} upload 
  * @param {*} data 
  * @returns <Promise>
@@ -121,7 +121,6 @@ exports.uploadMultiple = asyncHandler(async(req, res, next) => {
             const { originalname, mimetype } = file;
             const data = { userId, fileName:originalname, fileType:mimetype };
             const upload = retrieveUpload(file);
-            
             await doUpload(file).then( async (fileResponse) => {
                 const { secure_url } = fileResponse;
                 const isDuplicate = await uploadExists(secure_url);
