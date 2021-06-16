@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 
-// values for avaialbility hours each week
-const availability_values = ["10" , "10+" , "20" , "20+" , "30" , "30+"];
-
+const currentDate = new Date();
 const profileSchema = new mongoose.Schema({
     firstname : {
         type: String,
@@ -24,7 +22,7 @@ const profileSchema = new mongoose.Schema({
             }
         }
     },
-    description :{
+    description : {
         type: String,
         required: true,
         trim: true,
@@ -34,17 +32,13 @@ const profileSchema = new mongoose.Schema({
             }
         }
     },
-    availability : {
+    available_start : {
         type: String,
-        required: true,
-        trim : true,
-        default: "10",
-        validate (value) {
-            // checking whether the value is one of the allowed ones in availability_values array
-            if (!availability_values.includes(value)) {
-                throw new Error('Please choose among the following values : [10 , 10+ , 20 , 20+ , 30 , 30+]');
-            }
-        }
+        trim: true
+    },
+    available_end : {
+        type: String,
+        trim: true
     }
 });
 

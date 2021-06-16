@@ -2,13 +2,27 @@ const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
 const profileModel = require('../models/Profile');
 
+const currentDate = new Date();
+const [month, day, year] = [currentDate.getMonth() , currentDate.getDate(), currentDate.getFullYear()];
+const date = `${day}-${month}-${year}`;
+console.log("the current date is " , date);
+
 exports.createProfile = asyncHandler(async (req, res, next) => {
-  const { firstname, lastname, description, availability } = req.body;
+  let { firstname, lastname, description, available_start, available_end } = req.body;
+  // checking if start_date is not mentioned and giving a default value of today
+  if (available_start === '') {
+    available_start = date;
+  }
+  // checking if end_date is not mentioned and giving a default value to 1 day following today
+  if (available_end === '') {
+    available_end = date;
+  }
   const profile = new Profile({
     firstname,
     lastname,
     description,
-    availability,
+    available_start,
+    available_end
   });
   try {
     const result = await profile.save();
