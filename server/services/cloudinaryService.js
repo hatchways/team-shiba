@@ -19,10 +19,10 @@ class CloudinaryService{
    * @param {*} file 
    * returns a promise
    */
-    upload = async (buffer) => {
+    upload = async (buffer, options={}) => {
         return new Promise((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
-                { public_id: "sample_woman" }, 
+                { public_id: options.originalname }, 
               (error, result) => {
                 if (result) return resolve(result);
                 reject(error);

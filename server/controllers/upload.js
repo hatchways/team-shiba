@@ -11,9 +11,10 @@ exports.uploadSingleFile = asyncHandler(async(req, res, next) => {
         res.status(400);
         throw new Error('Invalid file type. Please upload [jpeg, png, jpg]')
     }
+    console.log(req.file);
     upload.file_type = mimetype;
     upload.file_name = originalname;
-    return await cursor.upload(buffer).then( async (fileResponse) => {
+    return await cursor.upload(buffer, { originalname }).then( async (fileResponse) => {
         const { secure_url } = fileResponse;
         upload.file_url = secure_url;
         await upload.save();

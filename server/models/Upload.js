@@ -2,24 +2,24 @@ const mongoose = require("mongoose");
 
 
 const uploadSchema = new mongoose.Schema({
-  file_type: {
+  fileType: {
     type: String,
     required: true,
   },
-  file_name: {
+  fileName: {
     type: String,
     required: true,
     unique: true
   },
-  file_url: {
+  fileUrl: {
     type: String,
     required: true
   },
-  created_at: {
+  createdAt: {
     type: Date,
     default: Date.now
   },
-  updated_at: {
+  updatedAt: {
     type: Date,
     default: Date.now
   },

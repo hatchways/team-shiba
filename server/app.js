@@ -3,6 +3,7 @@ const path = require("path");
 const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
+const swaggerUi = require('swagger-ui-express'), swaggerJsdoc = require("swagger-jsdoc");
 const { notFound, errorHandler } = require("./middleware/error");
 const connectDB = require("./db");
 const { join } = require("path");
@@ -13,10 +14,12 @@ const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const uploadRouter = require("./routes/upload");
 
+
+const { json, urlencoded } = express;
+
 /**
  * Swagger
  */
-//Swagger Configuration  
 const swaggerOptions = {  
   swaggerDefinition: {  
       info: {  
@@ -26,11 +29,8 @@ const swaggerOptions = {
   },  
   apis:['routes/upload.js'],  
 } 
-const swaggerUi = require('swagger-ui-express'), swaggerJsdoc = require("swagger-jsdoc");
+
 const swaggerDocs = swaggerJsdoc(swaggerOptions);  
-
-
-const { json, urlencoded } = express;
 
 
 connectDB();
