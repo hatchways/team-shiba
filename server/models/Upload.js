@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 
 const uploadSchema = new mongoose.Schema({
+  
+  userId: {
+    type: String,
+    required: true,
+  },
   fileType: {
     type: String,
     required: true,

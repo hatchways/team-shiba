@@ -4,7 +4,7 @@ const protect = require("../middleware/auth");
 const multer  = require('multer');
 const fileUploader = multer();
   
-const { uploadSingleFile } = require("../controllers/upload");
+const { uploadSingle } = require("../controllers/upload");
 
 
 
@@ -14,7 +14,7 @@ const { uploadSingleFile } = require("../controllers/upload");
  *   post: 
  *     description: Upload a single file
  *     parameters: 
- *     - name: UploadFile 
+ *     - name: SingleFile 
  *       description: Uploads a file
  *       in: formData 
  *       required: true 
@@ -24,6 +24,6 @@ const { uploadSingleFile } = require("../controllers/upload");
  *         description: Created  
  *   
  */
-router.route("/single").post([fileUploader.single('UploadFile')],uploadSingleFile);
+router.route("/single").post([fileUploader.single('SingleFile')],uploadSingle);
 
 module.exports = router;

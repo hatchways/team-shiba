@@ -1,28 +1,37 @@
 const Upload = require("../models/Upload");
 const CloudinaryService = require("../services/cloudinaryService");
 const asyncHandler = require("express-async-handler");
+const { HTTP_CONSTANTS } = require("../utils/constants");
+
 const cursor = new CloudinaryService();
 
-exports.uploadSingleFile = asyncHandler(async(req, res, next) => {
+exports.uploadSingle = asyncHandler(async(req, res, next) => {
     const { fieldname, originalname, mimetype, buffer } = req.file;
     const { userId } = req.body;
     const upload = new Upload();
     if(!upload.isValid(mimetype)){
-        res.status(400);
+        res.status(HTTP_CONSTANTS.BAD_REQUEST);
         throw new Error('Invalid file type. Please upload [jpeg, png, jpg]')
     }
     console.log(req.file);
-    upload.file_type = mimetype;
-    upload.file_name = originalname;
+    upload.userId = userId;
+    upload.fileType = mimetype;
+    upload.fileName = originalname;
     return await cursor.upload(buffer, { originalname }).then( async (fileResponse) => {
         const { secure_url } = fileResponse;
-        upload.file_url = secure_url;
+        upload.fileUrl = secure_url;
         await upload.save();
-        res.status(200).json({ upload });
+        res.status(HTTP_CONSTANTS.OK).json({ upload });
      }).catch((error)=>{
         const { http_code, message } = error;
-        res.status(http_code);
+        res.status(http_code || HTTP_CONSTANTS.BAD_REQUEST);
         throw new Error(message);
      })
     
+  });
+
+
+exports.uploadMultiple = asyncHandler(async(req, res, next) => {
+    
+   
   });
