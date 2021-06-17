@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
+import ProfileDashboard from './pages/ProfileSetup/ProfileDashboard';
 
 import './App.css';
 
@@ -23,8 +24,14 @@ function App(): JSX.Element {
                 <Route exact path="/dashboard">
                   <Dashboard />
                 </Route>
+                <Route exact path="/profiledashboard">
+                  <ProfileDashboard></ProfileDashboard>
+                </Route>
                 <Route path="*">
                   <Redirect to="/login" />
+                </Route>
+                <Route exact path="/home">
+                  <h2>Home</h2>
                 </Route>
               </Switch>
             </SocketProvider>
