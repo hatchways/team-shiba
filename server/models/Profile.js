@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 
 const currentDate = new Date();
+
 const profileSchema = new mongoose.Schema({
-    firstname : {
+    firstName : {
         type: String,
         required: true,
         trim: true,
@@ -12,7 +13,7 @@ const profileSchema = new mongoose.Schema({
             }
         }
     },
-    lastname : {
+    lastName : {
         type: String,
         required: true,
         trim: true,

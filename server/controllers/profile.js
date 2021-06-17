@@ -8,6 +8,7 @@ const date = `${day}-${month}-${year}`;
 console.log("the current date is " , date);
 
 exports.createProfile = asyncHandler(async (req, res, next) => {
+
   let { firstname, lastname, description} = req.body;
   const profile = new Profile({
     firstname,
