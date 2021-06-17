@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { url } from 'inspector';
-import Background from '../../Images/2dogs-crop.jpg';
+import Background from '../../Images/2dogs.jpg';
 import { theme } from '../../themes/theme';
 
 const useStyles = makeStyles(() => ({
