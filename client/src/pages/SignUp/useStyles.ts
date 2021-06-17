@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
   welcome: {
     fontSize: 26,
     paddingBottom: 20,
-    color: '#000000',
+    color: '#3a8dff',
     fontWeight: 700,
     fontFamily: "'Open Sans'",
   },
