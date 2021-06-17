@@ -9,9 +9,11 @@ const useStyles = makeStyles((theme: Theme) =>
       flexWrap: 'wrap',
     },
     textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
+      marginLeft: theme.spacing(0),
+      marginRight: theme.spacing(0),
       width: 200,
+      border: '1px solid #e5e5e5',
+      borderRadius: 5,
     },
   }),
 );
