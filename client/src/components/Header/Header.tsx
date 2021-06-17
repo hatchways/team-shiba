@@ -28,20 +28,18 @@ export default function Header(): JSX.Element {
   const classes = useStyles();
 
   return (
-    <div style={{ boxShadow: '3px 3px 2px rgba(0,0,0,0.5)' }}>
-      <Paper elevation={5} style={{ padding: '1em 3em' }}>
-        <div className={classes.root}>
-          <img src={logo} alt="" />
-          <div style={{ display: 'flex', gap: '2em', alignItems: 'center' }}>
-            <span>Become A Sitter</span>
-            <span>My Sitters</span>
-            <span>Messages</span>
-            <div style={{ width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden' }}>
-              <img style={{ height: '50px' }} src={profile} alt=""></img>
-            </div>
+    <Paper elevation={3} style={{ padding: '1em 3em', marginBottom: '1em' }}>
+      <div className={classes.root}>
+        <img src={logo} alt="" />
+        <div style={{ display: 'flex', gap: '2em', alignItems: 'center' }}>
+          <span>Become A Sitter</span>
+          <span>My Sitters</span>
+          <span>Messages</span>
+          <div style={{ width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden' }}>
+            <img style={{ height: '50px' }} src={profile} alt=""></img>
           </div>
         </div>
-      </Paper>
-    </div>
+      </div>
+    </Paper>
   );
 }

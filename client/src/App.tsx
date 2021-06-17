@@ -10,7 +10,6 @@ import { SnackBarProvider } from './context/useSnackbarContext';
 import ProfileDashboard from './pages/ProfileSetup/ProfileDashboard';
 
 import './App.css';
-import Header from './components/Header/Header';
 
 function App(): JSX.Element {
   return (
@@ -26,10 +25,7 @@ function App(): JSX.Element {
                   <Dashboard />
                 </Route>
                 <Route exact path="/profiledashboard">
-                  <>
-                    <Header></Header>
-                    <ProfileDashboard></ProfileDashboard>
-                  </>
+                  <ProfileDashboard></ProfileDashboard>
                 </Route>
                 <Route path="*">
                   <Redirect to="/login" />

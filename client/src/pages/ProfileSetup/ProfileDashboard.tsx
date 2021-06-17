@@ -5,6 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { Paper } from '@material-ui/core';
+import Header from '../../components/Header/Header';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   container: {
     display: 'grid',
-    gridTemplateColumns: 'auto 1fr',
+    gridTemplateColumns: '150px 1fr',
     padding: '5em',
     backgroundColor: '#FAFAFB',
   },
@@ -68,39 +69,42 @@ export default function ProfileDashboard(): JSX.Element {
   };
 
   return (
-    <div className={classes.container}>
-      <Tabs
-        orientation="vertical"
-        value={value}
-        onChange={handleChange}
-        aria-label="Vertical tabs example"
-        className={classes.tabs}
-      >
-        <Tab style={{ fontSize: '14px', textAlign: 'left' }} label="Edit Profile" {...a11yProps(0)} />
-        <Tab style={{ fontSize: '14px' }} label="Profile Photo" {...a11yProps(1)} />
-        <Tab style={{ fontSize: '14px' }} label="Payment" {...a11yProps(2)} />
-        <Tab style={{ fontSize: '14px' }} label="Security" {...a11yProps(3)} />
-        <Tab style={{ fontSize: '14px' }} label="Settings" {...a11yProps(4)} />
-      </Tabs>
-      <div className={classes.paper}>
-        <Paper style={{ minHeight: '70vh' }} elevation={3}>
-          <TabPanel value={value} index={0}>
-            Edit Profile
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            Profile Photo
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            Payment
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            Security
-          </TabPanel>
-          <TabPanel value={value} index={4}>
-            Settings
-          </TabPanel>
-        </Paper>
-      </div>
+    <div>
+      <Header></Header>
+      <main className={classes.container}>
+        <Tabs
+          orientation="vertical"
+          value={value}
+          onChange={handleChange}
+          aria-label="Vertical tabs example"
+          className={classes.tabs}
+        >
+          <Tab style={{ fontSize: '14px' }} label="Edit Profile" {...a11yProps(0)} />
+          <Tab style={{ fontSize: '14px' }} label="Profile Photo" {...a11yProps(1)} />
+          <Tab style={{ fontSize: '14px' }} label="Payment" {...a11yProps(2)} />
+          <Tab style={{ fontSize: '14px' }} label="Security" {...a11yProps(3)} />
+          <Tab style={{ fontSize: '14px' }} label="Settings" {...a11yProps(4)} />
+        </Tabs>
+        <div className={classes.paper}>
+          <Paper style={{ minHeight: '70vh' }} elevation={3}>
+            <TabPanel value={value} index={0}>
+              Edit Profile
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              Profile Photo
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+              Payment
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+              Security
+            </TabPanel>
+            <TabPanel value={value} index={4}>
+              Settings
+            </TabPanel>
+          </Paper>
+        </div>
+      </main>
     </div>
   );
 }
