@@ -31,14 +31,6 @@ const profileSchema = new mongoose.Schema({
                 throw new Error("Please describe yourself!!")
             }
         }
-    },
-    available_start : {
-        type: String,
-        trim: true
-    },
-    available_end : {
-        type: String,
-        trim: true
     }
 });
 

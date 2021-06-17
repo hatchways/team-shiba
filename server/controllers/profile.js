@@ -8,21 +8,11 @@ const date = `${day}-${month}-${year}`;
 console.log("the current date is " , date);
 
 exports.createProfile = asyncHandler(async (req, res, next) => {
-  let { firstname, lastname, description, available_start, available_end } = req.body;
-  // checking if start_date is not mentioned and giving a default value of today
-  if (available_start === '') {
-    available_start = date;
-  }
-  // checking if end_date is not mentioned and giving a default value to 1 day following today
-  if (available_end === '') {
-    available_end = date;
-  }
+  let { firstname, lastname, description} = req.body;
   const profile = new Profile({
     firstname,
     lastname,
     description,
-    available_start,
-    available_end
   });
   try {
     const result = await profile.save();
@@ -71,13 +61,12 @@ exports.getProfilesList = asyncHandler(async (req, res, next) => {
 
 exports.updateProfileById = asyncHandler(async (req, res, next) => {
   const profileID = req.params.id;
-  const { firstname, lastname, description, availability } = req.body;
+  const { firstname, lastname, description } = req.body;
   try {
     const updatedProfile = await profileModel.findByIdAndUpdate(profileID, {
       firstname,
       lastname,
       description,
-      availability,
     });
     if (!updatedProfile) {
       return res
