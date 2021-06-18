@@ -72,7 +72,7 @@ exports.markNotification = asyncHandler(async (req, res) => {
     if (!updateStatus) {
       return res.status(400).json({ status: "unable to mark notification" });
     }
-    res.status(201).json({ status: "notification marked as read." });
+    res.status(201).json({ status: "notification marked as read." , notification: updateStatus });
   } catch (error) {
     return res.status(500).json({ status: "error occured!!", error: error });
   }
