@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
+  // ID will already be provided by mongodb
   username: {
     type: String,
     required: true,

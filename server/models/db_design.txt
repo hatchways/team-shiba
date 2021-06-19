@@ -1,0 +1,72 @@
+Questions: 
+1) why would we need updatedAt feature in user ?
+
+
+
+list of all schemas with fields:
+1) user (username, email, password, register_date)  --> default
+2) profile (firstName, lastName, description )
+3) user (ID, fullname, location, serviceCost , email, password, userType, avatar, featureImages:[] , createdAt, updatedAt)
+4) notification (type, title, description, read/unread, date)
+5) uploads (userId, fileType, fileName, fileUrl, createdAt, updatedAt)
+6) Reviews (ID, userId, reviewId, rating, description)
+7) Messages (messge, senderId, receiverId, readStatus)
+8) Payments (ID, orderId, buyerId, receiverId, amount, status)
+9) Bookings (ID, period, bookStatus, senderId, receiverId)
+
+
+profile
+    -> firstName
+    -> lastName
+    -> description
+
+notification
+    -> type
+    -> title
+    -> description
+    -> read/unread
+    -> date
+
+upload
+    -> fileType
+    -> fileName
+    -> fileUrl
+    -> createdAt
+    -> updatedAt
+    -> reviews (ref : review)
+
+Review
+    -> reviewID
+    -> rating
+    -> description
+
+Message
+    -> contents
+    -> sender (ref: user)
+    -> receiver (ref: user)
+    -> readStatus 
+
+Payments
+    -> paymentID (automatically generated or manually generated)
+    -> orderID
+    -> buyerID (ref: user)
+    -> receiverID (ref: user)
+    -> amount
+    -> status
+
+Bookings
+    -> senderID (ref: user)
+    -> receiverID (ref: user)
+    -> BookingID
+    -> period
+    -> bookStatus
+
+
+user 
+    -> username,
+    -> password,
+    -> email,
+    -> register_date
+    -> profile (ref: profile)
+    -> notifications (ref: notification) 
+    -> uploads (ref: upload)
