@@ -1,11 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"), Schema = mongoose.Schema;
 
 
 const uploadSchema = new mongoose.Schema({
 
-  userId: {
-    type: String,
-    required: true,
+  _user: {
+    type: { type: Schema.ObjectId, ref: 'user' },
   },
   fileType: {
     type: String,

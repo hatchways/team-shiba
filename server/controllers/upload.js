@@ -21,23 +21,14 @@ const retrieveUpload = ({ mimetype }) =>{
  * @param {*} fileUrl 
  * @returns 
  */
-const uploadExists = async (fileUrl) =>{
-    return await Upload.findOne({ fileUrl });
-}
+const uploadExists = async (fileUrl) => await Upload.findOne({ fileUrl });
 
 /**
  * This method accepts and uploads a file 
  * @param {*} param0 
  * @returns <Promise>
  */
-const doUpload = async ({ originalname, buffer }) => {
-    return new Promise( async (resolve, reject)=>{
-        return await cursor.upload(buffer, { originalname }).then( async (fileResponse) => {
-            resolve(fileResponse)
-         }).catch(reject)
-    })
-}
-
+const doUpload = async ({ originalname, buffer }) =>  await cursor.upload(buffer, { originalname });
 
 /**
  * This method assigns model properties
@@ -64,17 +55,11 @@ const saveUpload = async (upload, data) => {
     return data.isDuplicate ? upload : await upload.save();
 }
 
-
 /**
  * This method bulk persists uploads
  * @param {*} instances 
  */
-const bulkSave = async (instances) => {
-    return new Promise(async (resolve, reject) => await Upload.collection.insertMany(instances, (error, result) =>
-     error && reject(error) || resolve(result)
-     )
-    );
-}
+const bulkSave = async (instances) =>  await Upload.collection.insertMany(instances);
 
 /**
  * This method uploads a single file
@@ -86,23 +71,22 @@ exports.uploadSingle = asyncHandler(async(req, res, next) => {
     const { originalname, mimetype } = file;
     const data = { userId, fileName:originalname, fileType:mimetype };
     const upload = retrieveUpload(file);
-   
     if(!upload){
         res.status(HTTP_CONSTANTS.BAD_REQUEST);
-        throw new Error('Invalid file type. Please upload [jpeg, png, jpg]')
+        throw new Error('Invalid file type. Please upload [png, jpg]')
     }
-    await doUpload(file).then( async (fileResponse) => {
-        const { secure_url } = fileResponse;
-        const isDuplicate = await uploadExists(secure_url);
-        upload.fileUrl = secure_url;
-        await saveUpload(upload, { ...data, isDuplicate });
-        res.status(HTTP_CONSTANTS.OK).json({ upload });
-    }).catch((error)=>{
+    try{
+       const fileResponse = await doUpload(file);
+       const { secure_url } = fileResponse;
+       const isDuplicate = await uploadExists(secure_url);
+       upload.fileUrl = secure_url;
+       await saveUpload(upload, { ...data, isDuplicate });
+       res.status(HTTP_CONSTANTS.OK).json({ upload });
+    }catch(error){
         const { http_code, message } = error;
         res.status(http_code || HTTP_CONSTANTS.BAD_REQUEST);
         throw new Error(message);
-    });
-      
+    }
   });
 
 
@@ -110,7 +94,7 @@ exports.uploadSingle = asyncHandler(async(req, res, next) => {
  * This method uploads multiple files
  *  * @param {*} Request 
  */
-exports.uploadMultiple = asyncHandler(async(req, res, next) => {    
+exports.uploadMultiple = asyncHandler(async (req, res, next) => {    
     const { body, files } = req;
     const { userId } = body;
     const errors = [];
@@ -121,7 +105,8 @@ exports.uploadMultiple = asyncHandler(async(req, res, next) => {
             const { originalname, mimetype } = file;
             const data = { userId, fileName:originalname, fileType:mimetype };
             const upload = retrieveUpload(file);
-            await doUpload(file).then( async (fileResponse) => {
+            try{
+                const fileResponse = await doUpload(file);
                 const { secure_url } = fileResponse;
                 const isDuplicate = await uploadExists(secure_url);
                 const appendUpload = () => {
@@ -129,10 +114,22 @@ exports.uploadMultiple = asyncHandler(async(req, res, next) => {
                     uploads.push(setProperties(upload, {...data, isDuplicate }))
                 }
                 (upload && !isDuplicate) ? appendUpload() : duplicates.push(isDuplicate);
-            }).catch((error)=>{
+            }catch(error){
                 const { http_code, message } = error;
                 errors.push({ http_code, message });
-            });
+            }
+            // await doUpload(file).then( async (fileResponse) => {
+            //     const { secure_url } = fileResponse;
+            //     const isDuplicate = await uploadExists(secure_url);
+            //     const appendUpload = () => {
+            //         upload.fileUrl = secure_url;
+            //         uploads.push(setProperties(upload, {...data, isDuplicate }))
+            //     }
+            //     (upload && !isDuplicate) ? appendUpload() : duplicates.push(isDuplicate);
+            // }).catch((error)=>{
+            //     const { http_code, message } = error;
+            //     errors.push({ http_code, message });
+            // });
         }
     }
     await doMultiple(); //cloud upload
@@ -143,14 +140,12 @@ exports.uploadMultiple = asyncHandler(async(req, res, next) => {
         throw new Error(message);
     }
     let responseData = { data:[], message, hasError:!!errors.length };
-    
-    await bulkSave(uploads).then(({ ops }) =>{ //persist
+    await bulkSave(uploads).then(({ ops }) => { //persist
         responseData.data = ops;
     }).catch(error => {
-        if(duplicates.length && !uploads.length) return responseData.data = duplicates;;
+        if(duplicates.length && !uploads.length) return responseData.data = duplicates;
         throw new Error(error.message)
     });
-
     res.status(HTTP_CONSTANTS.OK).json(responseData);
     
   });

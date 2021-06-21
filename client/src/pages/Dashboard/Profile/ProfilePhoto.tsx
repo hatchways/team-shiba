@@ -1,37 +1,90 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
+import React from 'react';
+import cx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import { FormikHelpers } from 'formik';
 import Typography from '@material-ui/core/Typography';
-import useStyles from './useStyles';
-import AuthHeader from '../../../components/AuthHeader/AuthHeader';
-import { useAuth } from '../../../context/useAuthContext';
-import { useSnackBar } from '../../../context/useSnackbarContext';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
+import { JSXElement } from '@babel/types';
 
-export default function ProfilePhoto(): JSX.Element {
-  const classes = useStyles();
-  const { updateLoginContext } = useAuth();
-  const { updateSnackBarMessage } = useSnackBar();
+const useStyles = makeStyles(({ palette }) => ({
+  card: {
+    // borderRadius: 12,
+    minWidth: 256,
+    minHeight: 400,
+    textAlign: 'center',
+    boxShadow: '10px 10px 10px rgba(68, 68, 68, 0.6)',
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    margin: 'auto',
+  },
+  heading: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    letterSpacing: '0.5px',
+    marginTop: 8,
+    marginBottom: 0,
+  },
+  subheader: {
+    fontSize: 14,
+    color: palette.grey[500],
+    marginBottom: '0.875em',
+  },
+  input: {
+    display: 'none',
+  },
+}));
+
+export default function ProfilePhoto() {
+  const styles = useStyles();
 
   return (
-    <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-      <Grid item xs={12} sm={8} md={7} elevation={6} component={Paper} square>
-        <Box className={classes.authWrapper}>
-          {/* <AuthHeader linkTo="/login" asideText="Already have an account?" btnText="Login" /> */}
-          <Box width="100%" maxWidth={450} p={3} alignSelf="center">
-            <Grid container>
-              <Grid item xs>
-                <Typography className={classes.welcome} component="h1" variant="h5">
-                  Profile photo Page??
-                </Typography>
-              </Grid>
-            </Grid>
-          </Box>
-          <Box p={1} alignSelf="center" />
-        </Box>
+    <Box mt={5}>
+      <Grid container spacing={3}>
+        <Grid item xs={3} sm={3} lg={3}></Grid>
+        <Grid item xs={6} sm={6} lg={6}>
+          <Card className={cx(styles.card)}>
+            <h2>Profile Photo</h2>
+            {/* <Typography component="h1">Profile Photo</Typography> */}
+            <CardContent>
+              <Avatar className={styles.avatar} src={'https://i.pravatar.cc/300'} />
+              <Box mt={2} px={3}>
+                <Box>
+                  <Typography className={styles.subheader} component="b">
+                    Be sure to use a photo that clearly shows your face.
+                  </Typography>
+                </Box>
+              </Box>
+            </CardContent>
+
+            <Box mt={2}>
+              <input accept="image/*" className={styles.input} id="contained-button-file" multiple type="file" />
+              <label htmlFor="contained-button-file">
+                <Button variant="outlined" size="large" color="secondary" component="span">
+                  <Typography>Upload a file from your device</Typography>
+                </Button>
+              </label>
+            </Box>
+            <Box mt={2}>
+              <IconButton aria-label="delete" color="default" onClick={() => alert('What')}>
+                <Box pr={2}>
+                  <DeleteIcon />
+                </Box>
+                <Typography component="span">Delete photo</Typography>
+              </IconButton>
+            </Box>
+          </Card>
+        </Grid>
+        <Grid item xs={3} sm={3} lg={3}></Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 }

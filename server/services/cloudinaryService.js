@@ -15,7 +15,7 @@ class CloudinaryService{
 
     
   /**
-   * 
+   * This method uploads a file to cloudinary
    * @param {*} file 
    * returns a promise
    */
@@ -26,18 +26,17 @@ class CloudinaryService{
             ['.jpg','.png','.jpeg'].map(ext=> originalname.endsWith(ext) && (originalname = originalname.replace(ext,'')));
             const uploadStream = cloudinary.uploader.upload_stream(
                 { public_id: originalname, folder:"teamShiba" }, 
-              (error, result) => {
-               return result && resolve(result) || reject(error);
-               
-              },
+              (error, result) => result && resolve(result) || reject(error)
             );
             streamifier.createReadStream(buffer).pipe(uploadStream);
           });
     }
 
-    replace = (fileId, newFile) =>{
-        
+
+    replace = (fileId, newFile) => {
+  
     }
+
 
     delete = (fileId) => {
 

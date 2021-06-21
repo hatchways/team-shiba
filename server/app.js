@@ -3,7 +3,7 @@ const path = require("path");
 const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
-const swaggerUi = require('swagger-ui-express'), swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express"), swaggerJsdoc = require("swagger-jsdoc");
 const { notFound, errorHandler } = require("./middleware/error");
 const connectDB = require("./db");
 const { join } = require("path");
@@ -13,25 +13,24 @@ const logger = require("morgan");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const uploadRouter = require("./routes/upload");
-
+const requestRouter = require("./routes/request");
 
 const { json, urlencoded } = express;
 
 /**
  * Swagger
  */
-const swaggerOptions = {  
-  swaggerDefinition: {  
-      info: {  
-          title:'CaninePlace',  
-          version:'1.0.0'  
-      }  
-  },  
-  apis:['routes/upload.js'],  
-} 
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: "CaninePlace",
+      version: "1.0.0",
+    },
+  },
+  apis: ["routes/user.js","routes/upload.js","routes/request.js"],
+};
 
-const swaggerDocs = swaggerJsdoc(swaggerOptions);  
-
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
 connectDB();
 const app = express();
@@ -39,11 +38,11 @@ const server = http.createServer(app);
 
 const io = socketio(server, {
   cors: {
-    origin: "*"
-  }
+    origin: "*",
+  },
 });
 
-io.on("connection", socket => {
+io.on("connection", (socket) => {
   console.log("connected");
 });
 
@@ -54,7 +53,7 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
-app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocs));  
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use((req, res, next) => {
   req.io = io;
@@ -64,6 +63,7 @@ app.use((req, res, next) => {
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/uploads", uploadRouter);
+app.use("/requests", requestRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")));
