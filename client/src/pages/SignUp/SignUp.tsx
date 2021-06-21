@@ -7,9 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import register from '../../helpers/APICalls/register';
 import SignUpForm from './SignUpForm/SignUpForm';
-import AuthHeader from '../../components/AuthHeader/AuthHeader';
+import Link from '@material-ui/core/Link';
 import { useAuth } from '../../context/useAuthContext';
 import { useSnackBar } from '../../context/useSnackbarContext';
+import Logo from '../../Images/logo.png';
+import NavLinks from '../Landing/NavLinks/NavLinks';
 
 export default function Register(): JSX.Element {
   const classes = useStyles();
@@ -40,20 +42,36 @@ export default function Register(): JSX.Element {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={7} elevation={6} component={Paper} square>
+      <Grid item xs={12} elevation={6} component={Paper} square className={classes.navbar}>
+        <Grid container>
+          <Grid item xs={6} className={classes.logo}>
+            <a href="/landing">
+              <img src={Logo} alt="Loving Sitter" />
+            </a>
+          </Grid>
+          <Grid item xs={6} component={Paper} square className={classes.navbar}>
+            <NavLinks link1="/login" link2="/signup" asideText="BECOME A SITTER" btn1="LOGIN" btn2="SIGN UP" />
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
         <Box className={classes.authWrapper}>
-          <Box width="100%" maxWidth={450} p={3} alignSelf="center">
+          <Box width="100%" maxWidth={450} p={3} alignSelf="center" boxShadow={3}>
             <Grid container>
-              <Grid item xs>
+              <Grid item xs={12}>
                 <Typography className={classes.welcome} component="h1" variant="h5">
                   Sign up
                 </Typography>
               </Grid>
             </Grid>
             <SignUpForm handleSubmit={handleSubmit} />
-            <AuthHeader linkTo="/login" asideText="Already a member?" btnText="Login" />
+            <Typography className={classes.member}>
+              Already a member?{' '}
+              <Link href="/login" className={classes.link}>
+                Login
+              </Link>
+            </Typography>
           </Box>
-          <Box p={1} alignSelf="center" />
         </Box>
       </Grid>
     </Grid>

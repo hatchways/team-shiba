@@ -9,18 +9,34 @@ const useStyles = makeStyles(() => ({
   },
   authWrapper: {
     display: 'flex',
-    alignItems: 'flex-start',
+    alignItems: 'flex-end',
     justifyContent: 'space-between',
     flexDirection: 'column',
-    minHeight: '100vh',
-    paddingTop: 23,
+    paddingTop: '2em',
   },
   welcome: {
     fontSize: 26,
     paddingBottom: 20,
-    color: '#3a8dff',
+    color: '#000',
     fontWeight: 700,
     fontFamily: "'Open Sans'",
+    paddingLeft: '150px',
+  },
+  logo: {
+    minHeight: '5vh',
+    paddingLeft: '3em',
+    paddingTop: '2em',
+    paddingBottom: '2em',
+  },
+  navbar: {
+    maxHeight: '9vh',
+  },
+  member: {
+    paddingLeft: '120px',
+    paddingTop: '2em',
+  },
+  link: {
+    color: '#f04040',
   },
 }));
 

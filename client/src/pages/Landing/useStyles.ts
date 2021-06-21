@@ -21,7 +21,8 @@ const useStyles = makeStyles(() => ({
   logo: {
     minHeight: '5vh',
     paddingLeft: '3em',
-    paddingTop: '3em',
+    paddingTop: '2em',
+    paddingBottom: '2em',
   },
   infoGrid: {
     paddingLeft: '10em',
