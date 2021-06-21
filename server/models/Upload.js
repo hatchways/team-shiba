@@ -3,8 +3,10 @@ const mongoose = require("mongoose"), Schema = mongoose.Schema;
 
 const uploadSchema = new mongoose.Schema({
 
-  _user: {
-    type: { type: Schema.ObjectId, ref: 'user' },
+  user: {
+    type: Schema.ObjectId, 
+    ref: 'user',
+    required:true,
   },
   fileType: {
     type: String,

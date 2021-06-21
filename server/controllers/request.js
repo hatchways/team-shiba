@@ -5,7 +5,7 @@ const asyncHandler = require("express-async-handler");
 
 // This is for an owner. It returns requests they have made
 exports.getRequestsByOwnerId = asyncHandler(async (req, res, next) => {
-    const { ownerId } = req.data;
+    const { ownerId } = req.query;
     const data = await Request.find({ owner: ownerId }).populate('sitter');
     res.status(200).json({ data });
 

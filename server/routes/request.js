@@ -13,7 +13,7 @@ const { getRequestsByOwnerId, getRequestsBySitterId, createSitterRequest } = req
  *     description: This is for a sitter. It retrieves owner requests
  *     parameters: 
  *     - name: sitterId 
- *       description: The profile user's id
+ *       description: The dog sitter's id
  *       in: query 
  *       required: true 
  *       type: string 
@@ -33,8 +33,8 @@ router.route("/sitter").get(getRequestsBySitterId);
  *     description: retrieves requests
  *     parameters: 
  *     - name: ownerId 
- *       description: The profile user's id
- *       in: formData 
+ *       description: The dog owner's id
+ *       in: query 
  *       required: true 
  *       type: string 
  *   post: 

@@ -38,7 +38,7 @@ const doUpload = async ({ originalname, buffer }) =>  await cursor.upload(buffer
  */
 const setProperties = (upload, data) => {
     const { userId, fileName, fileType } = data;
-    upload.userId = userId;
+    upload.user = userId;
     upload.fileType = fileType;
     upload.fileName = fileName;
     return upload;
@@ -118,18 +118,6 @@ exports.uploadMultiple = asyncHandler(async (req, res, next) => {
                 const { http_code, message } = error;
                 errors.push({ http_code, message });
             }
-            // await doUpload(file).then( async (fileResponse) => {
-            //     const { secure_url } = fileResponse;
-            //     const isDuplicate = await uploadExists(secure_url);
-            //     const appendUpload = () => {
-            //         upload.fileUrl = secure_url;
-            //         uploads.push(setProperties(upload, {...data, isDuplicate }))
-            //     }
-            //     (upload && !isDuplicate) ? appendUpload() : duplicates.push(isDuplicate);
-            // }).catch((error)=>{
-            //     const { http_code, message } = error;
-            //     errors.push({ http_code, message });
-            // });
         }
     }
     await doMultiple(); //cloud upload
