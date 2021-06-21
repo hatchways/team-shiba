@@ -13,7 +13,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     flexDirection: 'column',
     minHeight: '100vh',
-    paddingTop: 23,
+    paddingTop: '15em',
   },
   welcome: {
     fontSize: 26,
@@ -21,6 +21,15 @@ const useStyles = makeStyles(() => ({
     color: '#000000',
     fontWeight: 700,
     fontFamily: "'Open Sans'",
+  },
+  logo: {
+    minHeight: '5vh',
+    paddingLeft: '3em',
+    paddingTop: '2em',
+    paddingBottom: '2em',
+  },
+  navbar: {
+    maxHeight: '10vh',
   },
 }));
 
