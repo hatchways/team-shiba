@@ -10,9 +10,9 @@ import { FormikHelpers } from 'formik';
 export default function DogSitterProfile(): JSX.Element {
     const classes = useStyles();
     const handleSubmit = (
-        { availability, firstName, lastName, gender, birthDate, email, phoneNumber, address, description }: 
-        { email: string; availability: string; firstName: string , lastName: string, gender: string, birthDate: string, phoneNumber: string, address: string, description: string },
-        { setSubmitting }: FormikHelpers<{ email: string; availability: string; firstName: string , lastName: string, gender: string, birthDate: string, phoneNumber: string, address: string, description: string  }>,
+        {  availableStatus, firstName, lastName,  email, phoneNumber, address, description }: 
+        { availableStatus: boolean; email: string; firstName: string , lastName: string, phoneNumber: string, address: string, description: string },
+        { setSubmitting }: FormikHelpers<{ availableStatus: boolean; email: string;firstName: string , lastName: string, phoneNumber: string, address: string, description: string  }>,
       ) => {
         // register(firstName, lastName, gender, birthDate, email, phoneNumber, location, description).then((data) => {
         //   if (data.error) {

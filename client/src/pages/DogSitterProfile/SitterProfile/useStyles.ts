@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '0px',
     width: '60%',
   },
+  switch: {
+    paddingLeft: '0px',
+    marginTop: '20px',
+  },
   subTextFieldMonth: {
     paddingTop: '0.5rem',
     width: '7rem',
