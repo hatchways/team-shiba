@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const protect = require("../middleware/auth");
 
-const { getRequestsByOwnerId, getRequestsBySitterId, createSitterRequest } = require("../controllers/request");
+const {getRequestById, getRequestsByOwnerId, getRequestsBySitterId,
+     createSitterRequest, updateSitterRequest } = require("../controllers/request");
 
 
 
@@ -71,6 +72,52 @@ router.route("/owner").get(getRequestsByOwnerId).post(createSitterRequest);
 
 
 
-
+/** 
+ * @swagger 
+ * /requests/{requestId}: 
+ *   get: 
+ *     description: retrieves requests by Id
+ *     parameters: 
+ *     - name: requestId 
+ *       description: The request's Id
+ *       in: path 
+ *       required: true 
+ *       type: string 
+ *   put: 
+ *     description: updates an existing request
+ *     parameters: 
+ *     - name: requestId 
+ *       description: The request's Id
+ *       in: path 
+ *       required: true 
+ *       type: string 
+ *     - name: owner 
+ *       description: The dog owner's Id
+ *       in: formData 
+ *       required: true 
+ *       type: string 
+ *     - name: sitter 
+ *       description: The sitter's Id
+ *       in: formData 
+ *       required: true 
+ *       type: string 
+ *     - name: startDate 
+ *       description: The date to begin
+ *       in: formData 
+ *       required: true 
+ *       type: string 
+ *     - name: endDate 
+ *       description: The date to begin
+ *       in: formData 
+ *       required: true 
+ *       type: string 
+ *     responses:  
+ *       200: 
+ *         description: OK  
+ *       400: 
+ *         description: Bad Request  
+ *   
+ */
+ router.route("/:id").get(getRequestById).post(updateSitterRequest);
 
 module.exports = router;
