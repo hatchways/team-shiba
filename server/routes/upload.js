@@ -4,7 +4,8 @@ const protect = require("../middleware/auth");
 const multer  = require('multer');
 const fileUploader = multer();
   
-const { uploadSingle, uploadMultiple } = require("../controllers/upload");
+const { uploadSingle, uploadMultiple, 
+    getProfileUpload, updateUpload, deleteUpload } = require("../controllers/upload");
 
 
 
@@ -57,5 +58,25 @@ router.route("/single").post([fileUploader.single('singleFile')],uploadSingle);
  *   
  */
 router.route("/multiple").post([fileUploader.array('multiFile')],uploadMultiple);
+
+/** 
+ * @swagger 
+ * /uploads/profile-photo: 
+ *   get: 
+ *     description: retrieves user's profile photo
+ *     parameters: 
+ *     - name: userId 
+ *       description: The profile user's id
+ *       in: formData 
+ *       required: true 
+ *       type: string 
+ *     responses:  
+ *       201: 
+ *         description: Created  
+ *       400: 
+ *         description: Bad Request  
+ *   
+ */
+ router.route("/profile-photo/:userId").get(getProfileUpload);
 
 module.exports = router;

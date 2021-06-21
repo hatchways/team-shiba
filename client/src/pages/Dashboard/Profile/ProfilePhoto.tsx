@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import cx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -12,6 +12,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import { JSXElement } from '@babel/types';
+import profileService from '../../../services/profileService';
+
+const dummUserId = '60ca6b79375d322274dda01f'; // change this when you figure authcontext
 
 const useStyles = makeStyles(({ palette }) => ({
   card: {
@@ -45,6 +48,30 @@ const useStyles = makeStyles(({ palette }) => ({
 
 export default function ProfilePhoto() {
   const styles = useStyles();
+
+  const [userProfilePhoto, setUserProfilePhoto] = useState({});
+
+  useEffect(() => {
+    getProfilePhoto();
+    console.log('Gotten');
+  });
+
+  const editPhoto = () => {
+    console.log('');
+  };
+  const deletePhoto = () => {
+    console.log('');
+  };
+  const getProfilePhoto = () => {
+    profileService
+      .getProfilePhoto(dummUserId)
+      .then((profilePhotoResponse) => {
+        console.log({ profilePhotoResponse });
+      })
+      .catch((error) => {
+        console.log({ error });
+      });
+  };
 
   return (
     <Box mt={5}>

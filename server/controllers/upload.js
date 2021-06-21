@@ -80,6 +80,7 @@ exports.uploadSingle = asyncHandler(async(req, res, next) => {
        const { secure_url } = fileResponse;
        const isDuplicate = await uploadExists(secure_url);
        upload.fileUrl = secure_url;
+       upload.isProfilePhoto = true;
        await saveUpload(upload, { ...data, isDuplicate });
        res.status(HTTP_CONSTANTS.OK).json({ upload });
     }catch(error){
@@ -100,6 +101,7 @@ exports.uploadMultiple = asyncHandler(async (req, res, next) => {
     const errors = [];
     const uploads = [];
     const duplicates = [];
+    let fileIndex = 0;
     const doMultiple = async () => { 
         for(let file of files){
             const { originalname, mimetype } = file;
@@ -111,12 +113,16 @@ exports.uploadMultiple = asyncHandler(async (req, res, next) => {
                 const isDuplicate = await uploadExists(secure_url);
                 const appendUpload = () => {
                     upload.fileUrl = secure_url;
+                    upload.isProfilePhoto = fileIndex == 0;
                     uploads.push(setProperties(upload, {...data, isDuplicate }))
                 }
                 (upload && !isDuplicate) ? appendUpload() : duplicates.push(isDuplicate);
             }catch(error){
                 const { http_code, message } = error;
                 errors.push({ http_code, message });
+            }
+            finally{
+                fileIndex++;
             }
         }
     }
@@ -137,5 +143,41 @@ exports.uploadMultiple = asyncHandler(async (req, res, next) => {
     res.status(HTTP_CONSTANTS.OK).json(responseData);
     
   });
+
+
+  /**
+   * This method retrieves a user's profile photo by their id
+   */
+exports.getProfileUpload = asyncHandler(async(req, res, next) => {
+    const { userId } = req.params;
+    console.log({ userId })
+    const profilePhoto = await Upload.findOne({ userId, isProfilePhoto:true });
+    console.log({ profilePhoto })
+    res.status(HTTP_CONSTANTS.OK).json({data: profilePhoto});
+
+});
+
+  /**
+   * This method updates a user's profile photo by it's url
+   */
+   exports.updateUpload = asyncHandler(async(req, res, next) => {
+    const { userId } = req.params;
+    const { fileUrl } = req.body;
+    const profilePhoto = await Upload.findOneAndUpdate({ userId, fileUrl }, { ...req.body }, { new:true });
+    res.status(HTTP_CONSTANTS.OK).json({data: profilePhoto});
+
+});
+
+
+  /**
+   * This method deletes a user's  upload by its id
+   */
+   exports.deleteUpload = asyncHandler(async(req, res, next) => {
+    const { fileUrl } = req.params;
+    await Upload.findOneAndDelete({ fileUrl });
+    res.status(HTTP_CONSTANTS.OK).json({data: {message:"Photo removed."}});
+
+});
+
 
 

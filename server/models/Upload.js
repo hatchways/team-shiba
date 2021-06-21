@@ -21,6 +21,10 @@ const uploadSchema = new mongoose.Schema({
     required: true,
     unique:true
   },
+  isProfilePhoto: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now
