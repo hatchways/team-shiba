@@ -24,7 +24,13 @@ const userSchema = new mongoose.Schema({
     }
   });
 
+  const User = new mongoose.model("User" ,userSchema);
+
   const profileSchema = new mongoose.Schema({
+    userID : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     firstName : {
         type: String,
         required: true,
@@ -42,16 +48,17 @@ const userSchema = new mongoose.Schema({
     }
 });
 
+const Profile= new mongoose.model('Profile', profileSchema);
+
 const reviewSchema = new mongoose.Schema({
-    reviewID: {
-        type: String,
-        requried: true, 
-        trim: true
+    userID : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     },
     rating : {
         type: Number,
         required: true,
-        enum: [1,2,3,4,5],
+        enum: [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
         default: 1 
     },
     description: {
@@ -62,6 +69,10 @@ const reviewSchema = new mongoose.Schema({
 });
 
 const notificationSchema = new mongoose.Schema({
+    userID : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     type: {
         type: String,
         required: true,
@@ -90,15 +101,14 @@ const notificationSchema = new mongoose.Schema({
 });
 
 
-// models of above schemas 
-const User = new mongoose.model("User", userSchema);
-const Profile = new mongoose.model("Profile", profileSchema);
+// // models of above schemas 
+
 const Review = new mongoose.model("Review" , reviewSchema);
 const Notification = new mongoose.model("Notification" , notificationSchema);
 
 
 
-// schemas with references
+// // schemas with references
 const messageSchema = new mongoose.Schema({
     contents: {
         type: String,
@@ -121,61 +131,65 @@ const messageSchema = new mongoose.Schema({
 });
 
 
-const paymentSchema = new mongoose.Schema({
-    paymentID: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    orderID: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    buyerID: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },
-    receiverID: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },
-    amount: {
-        type: Number,
-        required: true,
-        default: 0
-    },
-    status: {
-        type: Boolean,
-        required: true,
-        default: false
-    }
-});
+// const paymentSchema = new mongoose.Schema({
+//     paymentID: {
+//         type: String,
+//         required: true,
+//         trim: true
+//     },
+//     orderID: {
+//         type: String,
+//         required: true,
+//         trim: true
+//     },
+//     buyerID: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: 'User'
+//     },
+//     receiverID: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: 'User'
+//     },
+//     amount: {
+//         type: Number,
+//         required: true,
+//         default: 0
+//     },
+//     status: {
+//         type: Boolean,
+//         required: true,
+//         default: false
+//     }
+// });
 
-const bookingSchema = new mongoose.Schema({
-    senderID : {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },
-    receiverID: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },
-    BookingID: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    bookStatus: {
-        type: String,
-        required: true,
-        enum: ['accepted', 'declined', 'onHold']
-    }
-});
+// const bookingSchema = new mongoose.Schema({
+//     senderID : {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: 'User'
+//     },
+//     receiverID: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: 'User'
+//     },
+//     BookingID: {
+//         type: String,
+//         required: true,
+//         trim: true
+//     },
+//     bookStatus: {
+//         type: String,
+//         required: true,
+//         enum: ['accepted', 'declined', 'onHold']
+//     }
+// });
 
 
 const uploadSchema = new mongoose.Schema({
     // this will be enum type from an array of values []
+    userID : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     fileType: {
         type: String,
         required: true,
@@ -198,21 +212,16 @@ const uploadSchema = new mongoose.Schema({
     updatedAt : {
         type: Date,
         required: true
-    },
-    reviews: [{
-        review : {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Review'
-        }
-    }]
+    }
 });
 
-// models of above schemas with references
-const Payment = new mongoose.model('Payment' , paymentSchema);
+// // models of above schemas with references
+// const Payment = new mongoose.model('Payment' , paymentSchema);
 const Message = new mongoose.model('Message' , messageSchema);
-const Booking = new mongoose.model('Booking' , bookingSchema);
+// const Booking = new mongoose.model('Booking' , bookingSchema);
 const Upload = new mongoose.model("Upload", uploadSchema);
 
 module.exports = {
-    User, Profile, Message, Payment, Booking, Upload, Notification, Review 
+    User, Profile, Upload, Notification, Review, Message 
+    // Message, Payment, Booking,
 }

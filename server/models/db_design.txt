@@ -6,21 +6,35 @@ Questions:
 list of all schemas with fields:
 1) user (username, email, password, register_date)  --> default
 2) profile (firstName, lastName, description )
-3) user (ID, fullname, location, serviceCost , email, password, userType, avatar, featureImages:[] , createdAt, updatedAt)
+3) animalSitter (ID, fullname, location, serviceCost , email, password, userType, avatar, featureImages:[] , createdAt, updatedAt)
 4) notification (type, title, description, read/unread, date)
 5) uploads (userId, fileType, fileName, fileUrl, createdAt, updatedAt)
-6) Reviews (ID, userId, reviewId, rating, description)
+6) Reviews (userId, reviewId, rating, description)
 7) Messages (messge, senderId, receiverId, readStatus)
 8) Payments (ID, orderId, buyerId, receiverId, amount, status)
 9) Bookings (ID, period, bookStatus, senderId, receiverId)
 
+animalSitter
+    -> animalSitterID
+    -> fullname
+    -> location
+    -> serviceCost
+    -> email
+    -> password
+    -> avatar
+    -> featureImages
+    -> createdAt
+    -> updatedAt
 
 profile
+    -> profileID 
+    -> userID (ref: user)
     -> firstName
     -> lastName
     -> description
 
-notification
+notification 
+    -> userID (ref: user) (ref: animalSitter)
     -> type
     -> title
     -> description
@@ -28,15 +42,16 @@ notification
     -> date
 
 upload
+    -> userID (ref: user)
     -> fileType
     -> fileName
     -> fileUrl
     -> createdAt
     -> updatedAt
-    -> reviews (ref : review)
 
 Review
     -> reviewID
+    -> userID (ref: user)
     -> rating
     -> description
 
@@ -50,23 +65,23 @@ Payments
     -> paymentID (automatically generated or manually generated)
     -> orderID
     -> buyerID (ref: user)
-    -> receiverID (ref: user)
+    -> receiverID (ref: dogSitter)
     -> amount
     -> status
 
 Bookings
     -> senderID (ref: user)
-    -> receiverID (ref: user)
+    -> receiverID (ref: dogSitter)
     -> BookingID
     -> period
     -> bookStatus
 
 
 user 
+    -> userID
+    -> userType
+    -> avatar
     -> username,
     -> password,
     -> email,
-    -> register_date
-    -> profile (ref: profile)
-    -> notifications (ref: notification) 
-    -> uploads (ref: upload)
+    -> register_date 
