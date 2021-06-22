@@ -49,18 +49,36 @@ const useStyles = makeStyles(({ palette }) => ({
 export default function ProfilePhoto() {
   const styles = useStyles();
 
-  const [userProfilePhoto, setUserProfilePhoto] = useState({});
+  const [userProfilePhoto, setUserProfilePhoto] = useState({ fileUrl: 'https://i.pravatar.cc/300' });
+  const [selectedPhoto, setPhoto] = useState({ name: null });
 
   useEffect(() => {
     getProfilePhoto();
   }, []);
 
-  const editPhoto = () => {
-    console.log('');
+  const selectPhoto = (event: any) => {
+    const file = event.target.files[0];
+    setPhoto(file);
   };
+
+  const uploadPhoto = (event: any) => {
+    event.preventDefault();
+    profileService
+      .uploadProfilePhoto(dummUserId, selectedPhoto)
+      .then((photoResponse) => {
+        setUserProfilePhoto(photoResponse.data);
+        setPhoto({ name: null });
+        console.log({ photoResponse });
+      })
+      .catch((error) => {
+        console.log({ error });
+      });
+  };
+
   const deletePhoto = () => {
     console.log('');
   };
+
   const getProfilePhoto = () => {
     profileService
       .getProfilePhoto(dummUserId)
@@ -82,7 +100,7 @@ export default function ProfilePhoto() {
             <h2>Profile Photo</h2>
             {/* <Typography component="h1">Profile Photo</Typography> */}
             <CardContent>
-              <Avatar className={styles.avatar} src={'https://i.pravatar.cc/300'} />
+              <Avatar className={styles.avatar} src={userProfilePhoto?.fileUrl} />
               <Box mt={2} px={3}>
                 <Box>
                   <Typography className={styles.subheader} component="b">
@@ -93,12 +111,28 @@ export default function ProfilePhoto() {
             </CardContent>
 
             <Box mt={2}>
-              <input accept="image/*" className={styles.input} id="contained-button-file" multiple type="file" />
-              <label htmlFor="contained-button-file">
-                <Button variant="outlined" size="large" color="secondary" component="span">
-                  <Typography>Upload a file from your device</Typography>
-                </Button>
-              </label>
+              <form encType="multipart/form-data" onSubmit={uploadPhoto}>
+                <input
+                  accept="image/*"
+                  className={styles.input}
+                  id="contained-button-file"
+                  name="singleFile"
+                  onChange={selectPhoto}
+                  type="file"
+                />
+                <label htmlFor="contained-button-file">
+                  <Button variant="outlined" size="large" color="secondary" component="span">
+                    <Typography>{selectedPhoto?.name || 'Upload a file from your device'}</Typography>
+                  </Button>
+                </label>
+                {selectedPhoto?.name && (
+                  <Box m={1}>
+                    <Button onClick={uploadPhoto} variant="outlined" size="large" color="primary" component="span">
+                      <Typography>Save</Typography>
+                    </Button>
+                  </Box>
+                )}
+              </form>
             </Box>
             <Box mt={2}>
               <IconButton aria-label="delete" color="default" onClick={() => alert('What')}>

@@ -31,7 +31,7 @@ const { uploadSingle, uploadMultiple,
  *       400: 
  *         description: Bad Request  
  *   
- */
+*/
 router.route("/single").post([fileUploader.single('singleFile')],uploadSingle);
 
 /** 
@@ -78,5 +78,7 @@ router.route("/multiple").post([fileUploader.array('multiFile')],uploadMultiple)
  *   
  */
  router.route("/profile-photo/:userId").get(getProfileUpload);
+
+ 
 
 module.exports = router;

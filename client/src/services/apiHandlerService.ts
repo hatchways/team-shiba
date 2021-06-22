@@ -96,13 +96,19 @@ export const getFile = async (url: string, data = null) => {
     });
 };
 
-export const postFile = async (url: string, file: any | Blob, data = null) => {
+export const postFile = async (url: string, file: any | Blob, fileData?: any, data = null) => {
   const path = extractDataAsParam(`${BASE_URL}/${url}`, data);
   const formData = new FormData();
-  formData.append('file', file, file.name);
+  const fileKey = fileData && fileData.fileKey ? fileData.fileKey : 'file';
+  const formBody = fileData && fileData.formBody ? fileData.formBody : {};
+  const responseType = fileData.responseType || 'arraybuffer';
+  for (const key in formBody) {
+    formData.append(key, formBody[key]);
+  }
+  formData.append(fileKey, file, file.name);
 
   return await axios
-    .post(path, formData, { responseType: 'arraybuffer' })
+    .post(path, formData, { responseType })
     .then((response: { data: any }) => {
       return response.data;
     })

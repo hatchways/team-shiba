@@ -71,7 +71,7 @@ exports.uploadSingle = asyncHandler(async (req, res, next) => {
   const { userId } = body;
   const { originalname, mimetype } = file;
   const data = { userId, fileName: originalname, fileType: mimetype };
-  const upload = retrieveUpload(file);
+  const upload = retrieveUpload(file); // check validity
   if (!upload) {
     res.status(HTTP_CONSTANTS.BAD_REQUEST);
     throw new Error("Invalid file type. Please upload [png, jpg]");
@@ -83,7 +83,7 @@ exports.uploadSingle = asyncHandler(async (req, res, next) => {
     upload.fileUrl = secure_url;
     upload.isProfilePhoto = true;
     await saveUpload(upload, { ...data, isDuplicate });
-    res.status(HTTP_CONSTANTS.OK).json({ upload });
+    res.status(HTTP_CONSTANTS.OK).json({ data: upload });
   } catch (error) {
     const { http_code, message } = error;
     res.status(http_code || HTTP_CONSTANTS.BAD_REQUEST);
@@ -170,14 +170,7 @@ exports.getProfileUpload = asyncHandler(async (req, res, next) => {
  * This method updates a user's profile photo by it's url
  */
 exports.updateUpload = asyncHandler(async (req, res, next) => {
-  const { userId } = req.params;
-  const { fileUrl } = req.body;
-  const profilePhoto = await Upload.findOneAndUpdate(
-    { userId, fileUrl },
-    { ...req.body },
-    { new: true }
-  );
-  res.status(HTTP_CONSTANTS.OK).json({ data: profilePhoto });
+    // return 
 });
 
 /**

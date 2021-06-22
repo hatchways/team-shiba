@@ -14,6 +14,21 @@ class ProfileService {
     const url = `uploads/profile-photo/${userId}`;
     return apiHandler.get(url);
   };
+
+  /**
+   * This method uploads a user's profile photo
+   * @param userId
+   * @returns
+   */
+  public static uploadProfilePhoto = (userId: string, file: any): Promise<any> => {
+    const url = `uploads/single`;
+    const fileData = {
+      fileKey: 'singleFile',
+      responseType: 'json',
+      formBody: { userId },
+    };
+    return apiHandler.postFile(url, file, fileData);
+  };
 }
 
 export default ProfileService;
