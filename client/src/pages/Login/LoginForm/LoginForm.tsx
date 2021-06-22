@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import { CircularProgress } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   handleSubmit: (
@@ -28,6 +29,27 @@ interface Props {
 
 export default function Login({ handleSubmit }: Props): JSX.Element {
   const classes = useStyles();
+  const history = useHistory();
+
+  (handleSubmit = (e) => {
+    const hardcodedCred = {
+      email: 'email@email.com',
+      password: 'password123',
+    };
+
+    if (e.email == hardcodedCred.email && e.password == hardcodedCred.password) {
+      //combination is good. Log them in.
+      //this is our token
+      const token = '8871a8174e6ce92958a8';
+      sessionStorage.setItem('auth-token', token);
+      //go to dashboard
+      history.push('/dashboard');
+    } else {
+      //bad combination
+      alert('wrong email or password combination');
+    }
+  }),
+    [history];
 
   return (
     <Formik
