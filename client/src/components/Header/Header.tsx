@@ -2,6 +2,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import logo from '../../Images/logo.png';
 import profile from '../../Images/profile.png';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,7 +31,9 @@ export default function Header(): JSX.Element {
   return (
     <Paper elevation={3} style={{ padding: '1em 3em', marginBottom: '1em' }}>
       <div className={classes.root}>
-        <img src={logo} alt="" />
+        <Link to="/">
+          <img src={logo} alt="" />
+        </Link>
         <div style={{ display: 'flex', gap: '2em', alignItems: 'center' }}>
           <span>Become A Sitter</span>
           <span>My Sitters</span>

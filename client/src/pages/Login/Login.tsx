@@ -42,7 +42,7 @@ export default function Login(): JSX.Element {
       <Grid item xs={12} sm={8} md={7} elevation={6} component={Paper} square>
         <Box className={classes.authWrapper}>
           <AuthHeader linkTo="/signup" asideText="Don't have an account?" btnText="Create account" />
-          <AuthHeader linkTo="/profiledashboard" asideText="Edit your profile" btnText="Profile Setting" />
+          <AuthHeader linkTo="/profile" asideText="Edit your profile" btnText="Profile Setting" />
           <Box width="100%" maxWidth={450} p={3} alignSelf="center">
             <Grid container>
               <Grid item xs>

@@ -24,13 +24,13 @@ function App(): JSX.Element {
                 <Route exact path="/dashboard">
                   <Dashboard />
                 </Route>
-                <Route exact path="/profiledashboard">
-                  <ProfileDashboard></ProfileDashboard>
+                <Route exact path="/profile">
+                  <ProfileDashboard />
                 </Route>
                 <Route path="*">
                   <Redirect to="/login" />
                 </Route>
-                <Route exact path="/home">
+                <Route exact path="/">
                   <h2>Home</h2>
                 </Route>
               </Switch>
