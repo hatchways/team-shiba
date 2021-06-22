@@ -65,8 +65,8 @@ router.route("/multiple").post([fileUploader.array('multiFile')],uploadMultiple)
  *   get: 
  *     description: retrieves user's profile photo
  *     parameters: 
- *     - name: userId 
- *       description: The profile user's id
+ *     - name: entityId 
+ *       description: The profile user's id || the photo's Id
  *       in: formData 
  *       required: true 
  *       type: string 
@@ -77,7 +77,7 @@ router.route("/multiple").post([fileUploader.array('multiFile')],uploadMultiple)
  *         description: Bad Request  
  *   
  */
- router.route("/profile-photo/:userId").get(getProfileUpload);
+ router.route("/profile-photo/:entityId").get(getProfileUpload).delete(deleteUpload);
 
  
 

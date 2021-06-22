@@ -13,6 +13,7 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import { JSXElement } from '@babel/types';
 import profileService from '../../../services/profileService';
+import { CircularProgress } from '@material-ui/core';
 
 const dummUserId = '60ca6b79375d322274dda01f'; // change this when you figure authcontext
 
@@ -49,8 +50,9 @@ const useStyles = makeStyles(({ palette }) => ({
 export default function ProfilePhoto() {
   const styles = useStyles();
 
-  const [userProfilePhoto, setUserProfilePhoto] = useState({ fileUrl: 'https://i.pravatar.cc/300' });
+  const [userProfilePhoto, setUserProfilePhoto] = useState({ fileUrl: 'https://i.pravatar.cc/300', filePublicId: '' });
   const [selectedPhoto, setPhoto] = useState({ name: null });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getProfilePhoto();
@@ -61,24 +63,27 @@ export default function ProfilePhoto() {
     setPhoto(file);
   };
 
+  /**
+   * This method uploads a new profile photo
+   */
   const uploadPhoto = (event: any) => {
     event.preventDefault();
+    setLoading(true);
     profileService
       .uploadProfilePhoto(dummUserId, selectedPhoto)
       .then((photoResponse) => {
         setUserProfilePhoto(photoResponse.data);
         setPhoto({ name: null });
-        console.log({ photoResponse });
+        setLoading(false);
       })
       .catch((error) => {
-        console.log({ error });
+        setLoading(false);
       });
   };
 
-  const deletePhoto = () => {
-    console.log('');
-  };
-
+  /**
+   * This method retrieves a user's profile photo
+   */
   const getProfilePhoto = () => {
     profileService
       .getProfilePhoto(dummUserId)
@@ -89,6 +94,25 @@ export default function ProfilePhoto() {
       .catch((error) => {
         console.log({ error });
       });
+  };
+
+  /**
+   * This method deletes a user's profile photo
+   */
+  const deleteProfilePhoto = (event: any) => {
+    event.preventDefault();
+    return (
+      userProfilePhoto.filePublicId &&
+      profileService
+        .deleteProfilePhoto(userProfilePhoto.filePublicId)
+        .then((profilePhotoResponse) => {
+          setUserProfilePhoto(profilePhotoResponse.data);
+          console.log({ profilePhotoResponse });
+        })
+        .catch((error) => {
+          console.log({ error });
+        })
+    );
   };
 
   return (
@@ -121,21 +145,28 @@ export default function ProfilePhoto() {
                   type="file"
                 />
                 <label htmlFor="contained-button-file">
-                  <Button variant="outlined" size="large" color="secondary" component="span">
+                  <Button variant="outlined" disabled={loading} size="large" color="secondary" component="span">
                     <Typography>{selectedPhoto?.name || 'Upload a file from your device'}</Typography>
                   </Button>
                 </label>
                 {selectedPhoto?.name && (
                   <Box m={1}>
-                    <Button onClick={uploadPhoto} variant="outlined" size="large" color="primary" component="span">
-                      <Typography>Save</Typography>
+                    <Button
+                      disabled={loading}
+                      onClick={uploadPhoto}
+                      variant="outlined"
+                      size="large"
+                      color="primary"
+                      component="span"
+                    >
+                      {loading ? <CircularProgress /> : <Typography>Save</Typography>}
                     </Button>
                   </Box>
                 )}
               </form>
             </Box>
             <Box mt={2}>
-              <IconButton aria-label="delete" color="default" onClick={() => alert('What')}>
+              <IconButton aria-label="delete" color="default" onClick={deleteProfilePhoto}>
                 <Box pr={2}>
                   <DeleteIcon />
                 </Box>

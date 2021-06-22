@@ -16,6 +16,10 @@ const uploadSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  filePublicId: {
+    type: String,
+    required: true
+  },
   fileUrl: {
     type: String,
     required: true,

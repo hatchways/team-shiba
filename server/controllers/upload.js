@@ -27,8 +27,12 @@ const uploadExists = async (fileUrl) => await Upload.findOne({ fileUrl });
  * @param {*} param0
  * @returns <Promise>
  */
-const doUpload = async ({ originalname, buffer }) =>
-  await cursor.upload(buffer, { originalname });
+const doUpload = async ({ originalname, buffer }, userId) =>{
+    const filePublicId = `${originalname}${userId}`; // ensure uniqueness per user. This is the file's public id
+    return await cursor.upload(buffer, { filePublicId });
+}
+  
+
 
 /**
  * This method assigns model properties
@@ -41,6 +45,7 @@ const setProperties = (upload, data) => {
   upload.user = userId;
   upload.fileType = fileType;
   upload.fileName = fileName;
+  upload.filePublicId = `${fileName}${userId}`;
   return upload;
 };
 
@@ -77,7 +82,7 @@ exports.uploadSingle = asyncHandler(async (req, res, next) => {
     throw new Error("Invalid file type. Please upload [png, jpg]");
   }
   try {
-    const fileResponse = await doUpload(file);
+    const fileResponse = await doUpload(file, userId);
     const { secure_url } = fileResponse;
     const isDuplicate = await uploadExists(secure_url);
     upload.fileUrl = secure_url;
@@ -108,7 +113,7 @@ exports.uploadMultiple = asyncHandler(async (req, res, next) => {
       const data = { userId, fileName: originalname, fileType: mimetype };
       const upload = retrieveUpload(file);
       try {
-        const fileResponse = await doUpload(file);
+        const fileResponse = await doUpload(file, userId);
         const { secure_url } = fileResponse;
         const isDuplicate = await uploadExists(secure_url);
         const appendUpload = () => {
@@ -156,13 +161,12 @@ exports.uploadMultiple = asyncHandler(async (req, res, next) => {
  * This method retrieves a user's profile photo by their id
  */
 exports.getProfileUpload = asyncHandler(async (req, res, next) => {
-  const { userId } = req.params;
-  console.log({ userId });
+  const { entityId } = req.params;
+  console.log({ entityId });
   const profilePhoto = await Upload.findOne({
-    user: userId,
+    user: entityId,
     isProfilePhoto: true,
   });
-  console.log({ profilePhoto });
   res.status(HTTP_CONSTANTS.OK).json({ data: profilePhoto });
 });
 
@@ -170,14 +174,16 @@ exports.getProfileUpload = asyncHandler(async (req, res, next) => {
  * This method updates a user's profile photo by it's url
  */
 exports.updateUpload = asyncHandler(async (req, res, next) => {
-    // return 
+  // return
 });
 
+
 /**
- * This method deletes a user's  upload by its id
+ * This method deletes a user's  upload by its publicId
  */
 exports.deleteUpload = asyncHandler(async (req, res, next) => {
-  const { fileUrl } = req.params;
-  await Upload.findOneAndDelete({ fileUrl });
+  const { entityId } = req.params;
+  await cursor.delete(entityId); // delete from cloudinary
+  await Upload.findOneAndDelete({ filePublicId: entityId }); // delete from app db
   res.status(HTTP_CONSTANTS.OK).json({ data: { message: "Photo removed." } });
 });

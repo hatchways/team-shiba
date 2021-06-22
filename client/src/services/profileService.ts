@@ -29,6 +29,16 @@ class ProfileService {
     };
     return apiHandler.postFile(url, file, fileData);
   };
+
+  /**
+   * This method deletes a user's profile photo
+   * @param fileId
+   * @returns
+   */
+  public static deleteProfilePhoto = (fileId: string): Promise<any> => {
+    const url = `uploads/profile-photo/${fileId}`;
+    return apiHandler.del(url);
+  };
 }
 
 export default ProfileService;

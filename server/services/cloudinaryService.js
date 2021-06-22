@@ -19,13 +19,13 @@ class CloudinaryService{
    * @param {*} file 
    * returns a promise
    */
-    upload = async (buffer, options={ originalname:'' }) => {
+    upload = async (buffer, options={ filePublicId:'' }) => {
         return new Promise((resolve, reject) => {
-            let { originalname } = options;
-            originalname = originalname.toLowerCase();
-            ['.jpg','.png','.jpeg'].map(ext=> originalname.endsWith(ext) && (originalname = originalname.replace(ext,'')));
+            let { filePublicId } = options;
+            filePublicId = filePublicId.toLowerCase();
+            ['.jpg','.png','.jpeg'].map(ext=> filePublicId.endsWith(ext) && (filePublicId = filePublicId.replace(ext,'')));
             const uploadStream = cloudinary.uploader.upload_stream(
-                { public_id: originalname, folder:"teamShiba" }, 
+                { public_id: filePublicId, folder:"teamShiba" }, 
               (error, result) => result && resolve(result) || reject(error)
             );
             streamifier.createReadStream(buffer).pipe(uploadStream);
@@ -38,9 +38,13 @@ class CloudinaryService{
     }
 
 
-    delete = (fileId) => {
-
-    }
+    /**
+   * This method deletes a file from cloudinary using its public ID
+   * @param {*} fileId
+   * returns a promise
+   */
+    delete = (fileId) => cloudinary.uploader.destroy(fileId);
+  
 
 }
 
