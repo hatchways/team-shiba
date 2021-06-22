@@ -53,8 +53,7 @@ export default function ProfilePhoto() {
 
   useEffect(() => {
     getProfilePhoto();
-    console.log('Gotten');
-  });
+  }, []);
 
   const editPhoto = () => {
     console.log('');
@@ -66,6 +65,7 @@ export default function ProfilePhoto() {
     profileService
       .getProfilePhoto(dummUserId)
       .then((profilePhotoResponse) => {
+        setUserProfilePhoto(profilePhotoResponse.data);
         console.log({ profilePhotoResponse });
       })
       .catch((error) => {
