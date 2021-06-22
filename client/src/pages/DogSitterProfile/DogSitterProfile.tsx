@@ -6,37 +6,43 @@ import useStyles from './useStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import SitterProfile  from './SitterProfile/SitterProfile';
 import { FormikHelpers } from 'formik';
+import createProfile from '../../helpers/APICalls/createProfile';
+import { useSnackBar } from '../../context/useSnackbarContext';
+import { useAuth } from '../../context/useAuthContext';
 
 export default function DogSitterProfile(): JSX.Element {
     const classes = useStyles();
+    const  { updateLoginContext } = useAuth();
+    const { updateSnackBarMessage } = useSnackBar();
     const handleSubmit = (
         {  availableStatus, firstName, lastName,  email, phoneNumber, address, description }: 
         { availableStatus: boolean; email: string; firstName: string , lastName: string, phoneNumber: string, address: string, description: string },
         { setSubmitting }: FormikHelpers<{ availableStatus: boolean; email: string;firstName: string , lastName: string, phoneNumber: string, address: string, description: string  }>,
       ) => {
-        // register(firstName, lastName, gender, birthDate, email, phoneNumber, location, description).then((data) => {
-        //   if (data.error) {
-        //     console.error({ error: data.error.message });
-        //     setSubmitting(false);
-        //     updateSnackBarMessage(data.error.message);
-        //   } else if (data.success) {
-        //     updateLoginContext(data.success);
-        //   } else {
-        //     // should not get here from backend but this catch is for an unknown issue
-        //     console.error({ data });
+        console.log("it reached here!!");
+        createProfile(availableStatus, firstName, lastName, email, phoneNumber, address, description).then((data) => {
+          if (data.error) {
+            console.error({ error: data.error.message });
+            setSubmitting(false);
+            updateSnackBarMessage(data.error.message);
+          } else if (data.success) {
+            console.log("this is the data " , data);
+            updateLoginContext(data.success);
+          } else {
+            // should not get here from backend but this catch is for an unknown issue
+            console.error({ data });
     
-        //     setSubmitting(false);
-        //     updateSnackBarMessage('An unexpected error occurred. Please try again');
-        //   }
-        // });
+            setSubmitting(false);
+            updateSnackBarMessage('An unexpected error occurred. Please try again');
+          }
+        });
       };
   return (
-    <Grid component="main"  >
+    <Grid container component="main"  >
         <CssBaseline />
         <Grid item component={Paper} className={classes.profileBackground}>
             <Box className={classes.box}>
-                {/* <h1>Edit Profile</h1> */}
-                <SitterProfile  handleSubmit={handleSubmit}/>
+                <SitterProfile handleSubmit={handleSubmit}/>
             </Box>
         </Grid>
       

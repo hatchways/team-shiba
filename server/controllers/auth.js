@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Profile = require('../models/Profile');
 const asyncHandler = require("express-async-handler");
 const generateToken = require("../utils/generateToken");
 
@@ -7,7 +8,7 @@ const generateToken = require("../utils/generateToken");
 // @access Public
 exports.registerUser = asyncHandler(async (req, res, next) => {
   const { username, email, password } = req.body;
-
+  console.log("the request body is " , req.body);
   const emailExists = await User.findOne({ email });
 
   if (emailExists) {
@@ -113,4 +114,44 @@ exports.logoutUser = asyncHandler(async (req, res, next) => {
   res.clearCookie("token");
 
   res.send("You have successfully logged out");
+});
+
+
+// @route POST /auth/profile
+// @desc create Profile for User
+// @access Public
+exports.createProfile = asyncHandler(async (req, res, next) => {
+  const { availableStatus, firstName, lastName, email, address, description } = req.body;
+  console.log("the request body is " , req.body);
+  const profile = await Profile.create({
+    availableStatus,
+    firstName,
+    lastName,
+    email,
+    address,
+    description
+  });
+
+  if (profile) {
+    // const token = generateToken(user._id);
+    // const secondsInWeek = 604800;
+
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   maxAge: secondsInWeek * 1000
+    // });
+
+    res.status(201).json({
+      success: {
+        profile: {
+          id: profile._id
+          // username: .username,
+          // email: user.email
+        }
+      }
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid profile data");
+  }
 });
