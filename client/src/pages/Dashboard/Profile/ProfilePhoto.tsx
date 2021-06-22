@@ -101,8 +101,7 @@ export default function ProfilePhoto() {
    */
   const deleteProfilePhoto = (event: any) => {
     event.preventDefault();
-    return (
-      userProfilePhoto.filePublicId &&
+    const doDelete = () =>
       profileService
         .deleteProfilePhoto(userProfilePhoto.filePublicId)
         .then((profilePhotoResponse) => {
@@ -111,8 +110,9 @@ export default function ProfilePhoto() {
         })
         .catch((error) => {
           console.log({ error });
-        })
-    );
+        });
+
+    userProfilePhoto.filePublicId && doDelete();
   };
 
   return (

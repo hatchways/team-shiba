@@ -57,7 +57,10 @@ const setProperties = (upload, data) => {
  */
 const saveUpload = async (upload, data) => {
   upload = setProperties(upload, data);
-  return data.isDuplicate ? upload : await upload.save();
+  if(data.isDuplicate) return upload;
+  const { user } = upload;
+  await Upload.updateOne({ user, isProfilePhoto:true },{isProfilePhoto: false}); //unset previous profile photo
+  return await upload.save();
 };
 
 /**
@@ -106,7 +109,6 @@ exports.uploadMultiple = asyncHandler(async (req, res, next) => {
   const errors = [];
   const uploads = [];
   const duplicates = [];
-  let fileIndex = 0;
   const doMultiple = async () => {
     for (let file of files) {
       const { originalname, mimetype } = file;
@@ -118,15 +120,12 @@ exports.uploadMultiple = asyncHandler(async (req, res, next) => {
         const isDuplicate = await uploadExists(secure_url);
         const appendUpload = () => {
           upload.fileUrl = secure_url;
-          upload.isProfilePhoto = fileIndex == 0;
           uploads.push(setProperties(upload, { ...data, isDuplicate }));
         };
         upload && !isDuplicate ? appendUpload() : duplicates.push(isDuplicate);
       } catch (error) {
         const { http_code, message } = error;
         errors.push({ http_code, message });
-      } finally {
-        fileIndex++;
       }
     }
   };
