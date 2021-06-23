@@ -15,12 +15,15 @@ export default function DogSitterProfile(): JSX.Element {
     const  { updateLoginContext } = useAuth();
     const { updateSnackBarMessage } = useSnackBar();
     const handleSubmit = (
-        {  availableStatus, firstName, lastName,  email, phoneNumber, address, description }: 
-        { availableStatus: boolean; email: string; firstName: string , lastName: string, phoneNumber: string, address: string, description: string },
-        { setSubmitting }: FormikHelpers<{ availableStatus: boolean; email: string;firstName: string , lastName: string, phoneNumber: string, address: string, description: string  }>,
+        {  dogSitter, availableStatus, firstName, lastName,  email, serviceCharge, phoneNumber, address, description }: 
+        { dogSitter: string; availableStatus: string; email: string; serviceCharge: string; firstName: string , lastName: string, phoneNumber: string, address: string, description: string },
+        { setSubmitting }: FormikHelpers<{ dogSitter: string; availableStatus: string; serviceCharge: string; email: string;firstName: string , lastName: string, phoneNumber: string, address: string, description: string  }>,
       ) => {
-        console.log("it reached here!!");
-        createProfile(availableStatus, firstName, lastName, email, phoneNumber, address, description).then((data) => {
+        // console.log("it reached here!!");
+        // console.log("these are the values to be submitted" , {
+        //   dogSitter, availableStatus, firstName, lastName,  email, serviceCharge, phoneNumber, address, description
+        // });
+        createProfile(dogSitter, availableStatus, firstName, lastName, email, phoneNumber, serviceCharge, address, description).then((data) => {
           if (data.error) {
             console.error({ error: data.error.message });
             setSubmitting(false);
@@ -38,7 +41,7 @@ export default function DogSitterProfile(): JSX.Element {
         });
       };
   return (
-    <Grid container component="main"  >
+    <Grid component="main" >
         <CssBaseline />
         <Grid item component={Paper} className={classes.profileBackground}>
             <Box className={classes.box}>

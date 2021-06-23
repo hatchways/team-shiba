@@ -60,6 +60,16 @@ const useStyles = makeStyles((theme) => ({
     color: 'rgb(0,0,0)',
     fontWeight: 'bold',
   },
+  selectLabel: {
+    marginTop: '2rem',
+    marginRight: '0.8rem',
+    textAlign: 'right',
+    fontSize: 11,
+    width: '10%',
+    height: '2rem',
+    color: 'rgb(0,0,0)',
+    fontWeight: 'bold',
+  },
   box: {
     display: 'flex',
   },

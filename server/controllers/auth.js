@@ -121,18 +121,22 @@ exports.logoutUser = asyncHandler(async (req, res, next) => {
 // @desc create Profile for User
 // @access Public
 exports.createProfile = asyncHandler(async (req, res, next) => {
-  const { availableStatus, firstName, lastName, email, address, description } = req.body;
+  const { dogSitter, availableStatus, firstName, lastName, email, serviceCharge, address, description , phoneNumber } = req.body;
   console.log("the request body is " , req.body);
   const profile = await Profile.create({
+    dogSitter,
+    serviceCharge,
     availableStatus,
     firstName,
     lastName,
     email,
     address,
+    phoneNumber,
     description
   });
 
   if (profile) {
+    console.log("the profile was successfully created!!");
     // const token = generateToken(user._id);
     // const secondsInWeek = 604800;
 

@@ -2,20 +2,33 @@ import { AuthApiData } from '../../interface/AuthApiData';
 import { FetchOptions } from '../../interface/FetchOptions';
 
 const createProfile = async (
-  availableStatus: boolean,
+  dogSitter: string,
+  availableStatus: string,
   firstName: string,
   lastName: string,
   email: string,
   phoneNumber: string,
+  serviceCharge: string,
   address: string,
   description: string,
 ): Promise<AuthApiData> => {
   const fetchOptions: FetchOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ availableStatus, firstName, lastName, address, email, phoneNumber, description }),
+    body: JSON.stringify({
+      dogSitter,
+      availableStatus,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      serviceCharge,
+      address,
+      description,
+    }),
     credentials: 'include',
   };
+  // console.log('This is the fetchOptions body', fetchOptions.body);
   return await fetch(`/auth/createProfile`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({

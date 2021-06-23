@@ -3,6 +3,16 @@ const mongoose = require('mongoose');
 const currentDate = new Date();
 
 const profileSchema = new mongoose.Schema({
+    dogSitter: {
+        type: String,
+        required: true,
+        default: 'no'
+    },
+    availabilityStatus: {
+        type: String,
+        required: false,
+        default: 'no'
+    },
     firstName : {
         type: String,
         required: true,
@@ -23,15 +33,32 @@ const profileSchema = new mongoose.Schema({
             }
         }
     },
-    description : {
+    email: {
+        type: String,
+        required : true,
+        trim: true,
+    },
+    phoneNumber: {
         type: String,
         required: true,
+        trim: true
+    },
+    serviceCharge: {
+        type: String,
+        required: false,
         trim: true,
-        validate (value) {
-            if (value.length < 1) {
-                throw new Error("Please describe yourself!!")
-            }
-        }
+        default: '0'
+    },
+    address: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    description: {
+        type: String,
+        required: false,
+        trim: true,
+        default: ''
     }
 });
 
