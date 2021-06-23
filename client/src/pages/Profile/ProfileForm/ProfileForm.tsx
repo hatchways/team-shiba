@@ -45,7 +45,7 @@ interface Props {
   ) => void;
 }
 
-const SitterProfile = ({ handleSubmit }: Props): JSX.Element => {
+const ProfileForm = ({ handleSubmit }: Props): JSX.Element => {
   const classes = useStyles();
   return (
     <Formik
@@ -259,7 +259,6 @@ const SitterProfile = ({ handleSubmit }: Props): JSX.Element => {
           )}
           <Box textAlign="center">
             <Button type="submit" size="small" variant="contained" color="secondary" className={classes.submit}>
-              {/* {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'SAVE'} */}
               SAVE
             </Button>
           </Box>
@@ -269,4 +268,4 @@ const SitterProfile = ({ handleSubmit }: Props): JSX.Element => {
   );
 };
 
-export default SitterProfile;
+export default ProfileForm;

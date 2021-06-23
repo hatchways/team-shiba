@@ -26,7 +26,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     (data: AuthApiDataSuccess) => {
       setLoggedInUser(data.user);
       history.push('/dashboard');
-      history.push('/dogSitter');
+      history.push('/profile');
     },
     [history],
     //[],

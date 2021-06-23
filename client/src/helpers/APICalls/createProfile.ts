@@ -28,7 +28,6 @@ const createProfile = async (
     }),
     credentials: 'include',
   };
-  // console.log('This is the fetchOptions body', fetchOptions.body);
   return await fetch(`/auth/createProfile`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
