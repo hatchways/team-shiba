@@ -12,6 +12,9 @@ const logger = require("morgan");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 
+// Payment Route
+const paymentRoute = require("./routes/payment");
+
 const { json, urlencoded } = express;
 
 connectDB();
@@ -43,6 +46,9 @@ app.use((req, res, next) => {
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
+
+//  Payment Route
+app.use('/payment', paymentRoute)
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")));

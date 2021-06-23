@@ -9,8 +9,8 @@ dotenv.config();
 
 const PaymentSetup = (): JSX.Element => {
   const [savePayment, setSavePayment] = useState([
-    { card: '34243', expire: '05 24' },
-    { card: '34242', expire: '05 24' },
+    { card: 'mastercard', expire: '05 24', number: '4568894' },
+    { card: 'visa', expire: '05 24', number: '458946' },
   ]);
 
   return (

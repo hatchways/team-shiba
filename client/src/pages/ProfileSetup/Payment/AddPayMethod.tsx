@@ -6,6 +6,7 @@ import Fade from '@material-ui/core/Fade';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from './CheckoutForm';
+import Button from '@material-ui/core/Button';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -40,10 +41,10 @@ export default function AddPayMethod(): JSX.Element {
   const stripePromise = loadStripe(process.env.REACT_APP_PUBLISH_KEY!);
 
   return (
-    <div>
-      <button type="button" onClick={handleOpen}>
-        Add Payment Method
-      </button>
+    <div style={{ padding: '1em' }}>
+      <Button variant="outlined" color="secondary" onClick={handleOpen}>
+        Add New Payment Profile
+      </Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -59,7 +60,7 @@ export default function AddPayMethod(): JSX.Element {
         <Fade in={open}>
           <div className={classes.paper}>
             <Elements stripe={stripePromise}>
-              <CheckoutForm></CheckoutForm>
+              <CheckoutForm />
             </Elements>
           </div>
         </Fade>
