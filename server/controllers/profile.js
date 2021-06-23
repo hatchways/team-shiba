@@ -1,11 +1,6 @@
 const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
 
-const currentDate = new Date();
-const [month, day, year] = [currentDate.getMonth() , currentDate.getDate(), currentDate.getFullYear()];
-const date = `${day}-${month}-${year}`;
-console.log("the current date is " , date);
-
 exports.createProfile = asyncHandler(async (req, res) => {
 
   let { firstname, lastname, description} = req.body;
@@ -35,7 +30,7 @@ exports.getProfileById = asyncHandler(async (req, res) => {
     if (!foundProfile) {
       return res.status(404).json({ status: "profile not found!!" });
     }
-    res.status(201).json({
+    res.status(200).json({
       status: "profile found!!",
       profile: foundProfile,
     });
@@ -50,7 +45,7 @@ exports.getProfilesList = asyncHandler(async (req, res) => {
     if (profiles.length === 0) {
       return res.status(404).json({ status: "no profiles in records!!" });
     }
-    res.status(201).json({
+    res.status(200).json({
       profilesFound: profiles.length,
       profiles,
     });
@@ -74,7 +69,7 @@ exports.updateProfileById = asyncHandler(async (req, res) => {
         .json({ status: "profile doesn't exist in records!!" });
     }
     // updating profile
-    res.status(201).json({
+    res.status(200).json({
       status: "profile updated!!",
       profile: updatedProfile,
     });

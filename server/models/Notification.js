@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 
-const notificationTypes = ["accepted", "declined", "upcoming"]
+//const notificationTypes = ["accepted", "declined", "upcoming"]
 const notificationSchema = new mongoose.Schema({
+    userID : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
     type: {
         type: String,
         required: true,
@@ -11,21 +15,11 @@ const notificationSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        validate(value) {
-            if (value.length < 5) {
-                throw new Error("title must be 5 or more characters long")
-            }
-        }
     },
     description :{
         type: String,
         required: true,
         trim: true,
-        validate (value) {
-            if (value.length < 20) {
-                throw new Error("description must be 20 or more characters long")
-            }
-        }
     },
     read : {
         type: Boolean,
