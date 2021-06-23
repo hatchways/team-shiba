@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-const currentDate = new Date();
-
 const profileSchema = new mongoose.Schema({
     dogSitter: {
         type: String,

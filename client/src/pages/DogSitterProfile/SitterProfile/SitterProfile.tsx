@@ -2,11 +2,9 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import { Formik, FormikHelpers, Field } from 'formik';
-import { useState } from 'react';
 import * as Yup from 'yup';
-import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
-import { CircularProgress, Switch } from '@material-ui/core';
+
 interface Props {
   handleSubmit: (
     {
@@ -141,7 +139,6 @@ const SitterProfile = ({ handleSubmit }: Props): JSX.Element => {
               InputProps={{
                 classes: { input: classes.inputs },
               }}
-              autoComplete="lastName"
               placeholder="Doe"
               helperText={touched.lastName ? errors.lastName : ''}
               error={touched.lastName && Boolean(errors.lastName)}
@@ -163,7 +160,6 @@ const SitterProfile = ({ handleSubmit }: Props): JSX.Element => {
               InputProps={{
                 classes: { input: classes.inputs },
               }}
-              autoComplete="email"
               placeholder="john-doe@gmail.com"
               helperText={touched.email ? errors.email : ''}
               error={touched.email && Boolean(errors.email)}
@@ -229,7 +225,6 @@ const SitterProfile = ({ handleSubmit }: Props): JSX.Element => {
               InputProps={{
                 classes: { input: classes.inputs },
               }}
-              autoComplete="address"
               placeholder="Address"
               helperText={touched.address ? errors.address : ''}
               error={touched.address && Boolean(errors.address)}
@@ -253,7 +248,6 @@ const SitterProfile = ({ handleSubmit }: Props): JSX.Element => {
                 InputProps={{
                   classes: { input: classes.inputsDescription },
                 }}
-                autoComplete="description"
                 placeholder="About you"
                 multiline={true}
                 helperText={touched.description ? errors.description : ''}
@@ -266,6 +260,7 @@ const SitterProfile = ({ handleSubmit }: Props): JSX.Element => {
           <Box textAlign="center">
             <Button type="submit" size="small" variant="contained" color="secondary" className={classes.submit}>
               {/* {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'SAVE'} */}
+              SAVE
             </Button>
           </Box>
         </form>

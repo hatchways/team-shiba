@@ -147,11 +147,7 @@ exports.createProfile = asyncHandler(async (req, res, next) => {
 
     res.status(201).json({
       success: {
-        profile: {
-          id: profile._id
-          // username: .username,
-          // email: user.email
-        }
+        profile: profile
       }
     });
   } else {
