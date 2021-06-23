@@ -10,10 +10,12 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
-
+import dotenv from 'dotenv';
+dotenv.config();
 import './App.css';
 
 function App(): JSX.Element {
+  console.log('the value of dummy is ', process.env.REACT_APP_DUMMY);
   return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
