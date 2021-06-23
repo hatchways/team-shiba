@@ -17,22 +17,21 @@ const retrieveUpload = ({ mimetype }) => {
 
 /**
  * THis method checks if a file already exists
- * @param {*} fileUrl
+ * @param {*} filterData
  * @returns
  */
-const uploadExists = async (fileUrl) => await Upload.findOne({ fileUrl });
+const uploadExists = async (filterData) =>
+  await Upload.findOne({ ...filterData });
 
 /**
  * This method accepts and uploads a file
  * @param {*} param0
  * @returns <Promise>
  */
-const doUpload = async ({ originalname, buffer }, userId) =>{
-    const filePublicId = `${originalname}${userId}`; // ensure uniqueness per user. This is the file's public id
-    return await cursor.upload(buffer, { filePublicId });
-}
-  
-
+const doUpload = async ({ originalname, buffer }, userId) => {
+  const filePublicId = `${originalname}${userId}`; // ensure uniqueness per user. This is the file's public id
+  return await cursor.upload(buffer, { filePublicId });
+};
 
 /**
  * This method assigns model properties
@@ -57,10 +56,29 @@ const setProperties = (upload, data) => {
  */
 const saveUpload = async (upload, data) => {
   upload = setProperties(upload, data);
-  if(data.isDuplicate) return upload;
+  const { isDuplicate } = data;
   const { user } = upload;
-  await Upload.updateOne({ user, isProfilePhoto:true },{isProfilePhoto: false}); //unset previous profile photo
-  return await upload.save();
+  const filePublicId = isDuplicate
+    ? isDuplicate.filePublicId
+    : upload.filePublicId;
+  const tryDeletes = async () => {
+    try {
+      await Upload.deleteMany({
+        user,
+        isProfilePhoto: true,
+        filePublicId: { $ne: filePublicId },
+      }); //remove previous profile photo from db excluding an existing one
+      await cursor.delete(filePublicId); // delete from cloudinary
+    } catch (error) {
+      //do nothing, since it may not exist
+
+    }
+  };
+  const trySave = async () => isDuplicate ? isDuplicate.save() : await upload.save();
+
+    await tryDeletes();
+    return await trySave();
+
 };
 
 /**
@@ -87,9 +105,13 @@ exports.uploadSingle = asyncHandler(async (req, res, next) => {
   try {
     const fileResponse = await doUpload(file, userId);
     const { secure_url } = fileResponse;
-    const isDuplicate = await uploadExists(secure_url);
+    const isDuplicate = await uploadExists({
+      fileUrl: secure_url,
+    });
     upload.fileUrl = secure_url;
-    upload.isProfilePhoto = true;
+    isDuplicate
+      ? (isDuplicate.isProfilePhoto = true)
+      : (upload.isProfilePhoto = true);
     await saveUpload(upload, { ...data, isDuplicate });
     res.status(HTTP_CONSTANTS.OK).json({ data: upload });
   } catch (error) {
@@ -117,7 +139,7 @@ exports.uploadMultiple = asyncHandler(async (req, res, next) => {
       try {
         const fileResponse = await doUpload(file, userId);
         const { secure_url } = fileResponse;
-        const isDuplicate = await uploadExists(secure_url);
+        const isDuplicate = await uploadExists({ fileUrl: secure_url });
         const appendUpload = () => {
           upload.fileUrl = secure_url;
           uploads.push(setProperties(upload, { ...data, isDuplicate }));
@@ -175,7 +197,6 @@ exports.getProfileUpload = asyncHandler(async (req, res, next) => {
 exports.updateUpload = asyncHandler(async (req, res, next) => {
   // return
 });
-
 
 /**
  * This method deletes a user's  upload by its publicId
