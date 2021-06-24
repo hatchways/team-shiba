@@ -7,9 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import login from '../../helpers/APICalls/login';
 import LoginForm from './LoginForm/LoginForm';
-import AuthHeader from '../../components/AuthHeader/AuthHeader';
+import NavLinks from '../Landing/NavLinks/NavLinks';
 import { useAuth } from '../../context/useAuthContext';
 import { useSnackBar } from '../../context/useSnackbarContext';
+import Logo from '../../Images/logo.png';
 
 export default function Login(): JSX.Element {
   const classes = useStyles();
@@ -39,10 +40,19 @@ export default function Login(): JSX.Element {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={7} elevation={6} component={Paper} square>
+      <Grid item xs={12} elevation={6} component={Paper} square className={classes.navbar}>
+        <Grid container>
+          <Grid item xs={6} className={classes.logo}>
+            <img src={Logo} alt="Loving Sitter" />
+          </Grid>
+          <Grid item xs={6} component={Paper} square className={classes.navbar}>
+            <NavLinks link1="/login" link2="/signup" asideText="BECOME A SITTER" btn1="LOGIN" btn2="SIGN UP" />
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
         <Box className={classes.authWrapper}>
-          <AuthHeader linkTo="/signup" asideText="Don't have an account?" btnText="Create account" />
-          <Box width="100%" maxWidth={450} p={3} alignSelf="center">
+          <Box width="100%" maxWidth={450} p={3} alignSelf="center" boxShadow={3}>
             <Grid container>
               <Grid item xs>
                 <Typography className={classes.welcome} component="h1" variant="h5">
