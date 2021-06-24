@@ -119,6 +119,6 @@ router.route("/owner/:ownerId").get(getRequestsByOwnerId).post(createSitterReque
  *         description: Bad Request
  *
  */
- router.route("/:requestId").get(getRequestById).post(updateSitterRequest);
+ router.route("/:requestId").get(getRequestById).put(updateSitterRequest);
 
 module.exports = router;
