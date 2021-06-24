@@ -25,17 +25,17 @@ const {getRequestById, getRequestsByOwnerId, getRequestsBySitterId,
  *         description: Bad Request  
  *   
  */
-router.route("/sitter").get(getRequestsBySitterId);
+router.route("/sitter/:sitterId").get(getRequestsBySitterId);
 
 /** 
  * @swagger 
- * /requests/owner: 
+ * /requests/owner/{ownerId}: 
  *   get: 
  *     description: retrieves requests
  *     parameters: 
  *     - name: ownerId 
  *       description: The dog owner's id
- *       in: query 
+ *       in: param 
  *       required: true 
  *       type: string 
  *   post: 
@@ -68,7 +68,7 @@ router.route("/sitter").get(getRequestsBySitterId);
  *         description: Bad Request  
  *   
  */
-router.route("/owner").get(getRequestsByOwnerId).post(createSitterRequest);
+router.route("/owner/:ownerId").get(getRequestsByOwnerId).post(createSitterRequest);
 
 
 
@@ -118,6 +118,6 @@ router.route("/owner").get(getRequestsByOwnerId).post(createSitterRequest);
  *         description: Bad Request  
  *   
  */
- router.route("/:id").get(getRequestById).post(updateSitterRequest);
+ router.route("/:requestId").get(getRequestById).post(updateSitterRequest);
 
 module.exports = router;
