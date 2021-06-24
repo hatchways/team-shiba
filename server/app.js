@@ -3,7 +3,8 @@ const path = require("path");
 const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
-const swaggerUi = require("swagger-ui-express"), swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express"),
+  swaggerJsdoc = require("swagger-jsdoc");
 const { notFound, errorHandler } = require("./middleware/error");
 
 const connectDB = require("./db");
@@ -14,7 +15,7 @@ const logger = require("morgan");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const profileRouter = require("./routes/profile");
-const notificationRouter = require('./routes/notification');
+const notificationRouter = require("./routes/notification");
 const uploadRouter = require("./routes/upload");
 const requestRouter = require("./routes/request");
 
@@ -22,14 +23,14 @@ const { json, urlencoded } = express;
 /**
  * Swagger
  */
- const swaggerOptions = {
+const swaggerOptions = {
   swaggerDefinition: {
     info: {
       title: "CaninePlace",
       version: "1.0.0",
     },
   },
-  apis: ["routes/user.js","routes/upload.js","routes/request.js"],
+  apis: ["routes/user.js", "routes/upload.js", "routes/request.js"],
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
@@ -40,11 +41,11 @@ const server = http.createServer(app);
 
 const io = socketio(server, {
   cors: {
-    origin: "*"
-  }
-}); 
+    origin: "*",
+  },
+});
 
-io.on("connection", socket => {
+io.on("connection", (socket) => {
   console.log("connected");
 });
 
@@ -64,8 +65,8 @@ app.use((req, res, next) => {
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
-app.use("/profile" , profileRouter);
-app.use("/notification" , notificationRouter);
+app.use("/profile", profileRouter);
+app.use("/notification", notificationRouter);
 app.use("/uploads", uploadRouter);
 app.use("/requests", requestRouter);
 

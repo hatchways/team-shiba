@@ -29,7 +29,7 @@ const uploadExists = async (filterData) =>
  * @returns <Promise>
  */
 const doUpload = async ({ originalname, buffer }, userId) => {
-  const filePublicId = `${originalname}${userId}`; // ensure uniqueness per user. This is the file's public id
+  const filePublicId = `${originalname}-${userId}`; // ensure uniqueness per user. This is the file's public id
   return await cursor.upload(buffer, { filePublicId });
 };
 

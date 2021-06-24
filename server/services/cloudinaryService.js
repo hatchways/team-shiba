@@ -2,8 +2,12 @@ const cloudinary = require("cloudinary").v2;
 const streamifier = require('streamifier');
 const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
 
+
+
 //All methods in this class return a promise
 class CloudinaryService{
+
+   static allowedFiles = ['.jpg','.png','.jpeg'];
 
     constructor(){
         cloudinary.config({
@@ -23,7 +27,7 @@ class CloudinaryService{
         return new Promise((resolve, reject) => {
             let { filePublicId } = options;
             filePublicId = filePublicId.toLowerCase();
-            ['.jpg','.png','.jpeg'].map(ext=> filePublicId.endsWith(ext) && (filePublicId = filePublicId.replace(ext,'')));
+            CloudinaryService.allowedFiles.map(ext=> filePublicId.endsWith(ext) && (filePublicId = filePublicId.replace(ext,'')));
             const uploadStream = cloudinary.uploader.upload_stream(
                 { public_id: filePublicId, folder:"teamShiba" }, 
               (error, result) => result && resolve(result) || reject(error)
