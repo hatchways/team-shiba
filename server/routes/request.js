@@ -2,28 +2,31 @@ const express = require("express");
 const router = express.Router();
 const protect = require("../middleware/auth");
 
-const {getRequestById, getRequestsByOwnerId, getRequestsBySitterId,
-     createSitterRequest, updateSitterRequest } = require("../controllers/request");
+const {
+  getRequestById,
+  getRequestsByOwnerId,
+  getRequestsBySitterId,
+  createSitterRequest,
+  updateSitterRequest,
+} = require("../controllers/request");
 
-
-
-/** 
- * @swagger 
- * /requests/sitter: 
- *   get: 
+/**
+ * @swagger
+ * /requests/sitter:
+ *   get:
  *     description: This is for a sitter. It retrieves owner requests
- *     parameters: 
- *     - name: sitterId 
+ *     parameters:
+ *     - name: sitterId
  *       description: The dog sitter's id
- *       in: query 
- *       required: true 
- *       type: string 
- *     responses:  
- *       200: 
- *         description: OK  
- *       400: 
- *         description: Bad Request  
- *   
+ *       in: query
+ *       required: true
+ *       type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ *       400:
+ *         description: Bad Request
+ *
  */
 router.route("/sitter/:sitterId").get(getRequestsBySitterId);
 
@@ -32,91 +35,89 @@ router.route("/sitter/:sitterId").get(getRequestsBySitterId);
  * /requests/owner/{ownerId}: 
  *   get: 
  *     description: retrieves requests
- *     parameters: 
- *     - name: ownerId 
+ *     parameters:
+ *     - name: ownerId
  *       description: The dog owner's id
  *       in: param 
  *       required: true 
  *       type: string 
  *   post: 
  *     description: creates a new sitter request
- *     parameters: 
- *     - name: owner 
+ *     parameters:
+ *     - name: owner
  *       description: The dog owner's Id
- *       in: formData 
- *       required: true 
- *       type: string 
- *     - name: sitter 
+ *       in: formData
+ *       required: true
+ *       type: string
+ *     - name: sitter
  *       description: The sitter's Id
- *       in: formData 
- *       required: true 
- *       type: string 
- *     - name: startDate 
+ *       in: formData
+ *       required: true
+ *       type: string
+ *     - name: startDate
  *       description: The date to begin
- *       in: formData 
- *       required: true 
- *       type: string 
- *     - name: endDate 
+ *       in: formData
+ *       required: true
+ *       type: string
+ *     - name: endDate
  *       description: The date to begin
- *       in: formData 
- *       required: true 
- *       type: string 
- *     responses:  
- *       200: 
- *         description: OK  
- *       400: 
- *         description: Bad Request  
- *   
+ *       in: formData
+ *       required: true
+ *       type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ *       400:
+ *         description: Bad Request
+ *
  */
 router.route("/owner/:ownerId").get(getRequestsByOwnerId).post(createSitterRequest);
 
-
-
-/** 
- * @swagger 
- * /requests/{requestId}: 
- *   get: 
+/**
+ * @swagger
+ * /requests/{requestId}:
+ *   get:
  *     description: retrieves requests by Id
- *     parameters: 
- *     - name: requestId 
+ *     parameters:
+ *     - name: requestId
  *       description: The request's Id
- *       in: path 
- *       required: true 
- *       type: string 
- *   put: 
+ *       in: path
+ *       required: true
+ *       type: string
+ *   put:
  *     description: updates an existing request
- *     parameters: 
- *     - name: requestId 
+ *     parameters:
+ *     - name: requestId
  *       description: The request's Id
- *       in: path 
- *       required: true 
- *       type: string 
- *     - name: owner 
+ *       in: path
+ *       required: true
+ *       type: string
+ *     - name: owner
  *       description: The dog owner's Id
- *       in: formData 
- *       required: true 
- *       type: string 
- *     - name: sitter 
+ *       in: formData
+ *       required: true
+ *       type: string
+ *     - name: sitter
  *       description: The sitter's Id
- *       in: formData 
- *       required: true 
- *       type: string 
- *     - name: startDate 
+ *       in: formData
+ *       required: true
+ *       type: string
+ *     - name: startDate
  *       description: The date to begin
- *       in: formData 
- *       required: true 
- *       type: string 
- *     - name: endDate 
+ *       in: formData
+ *       required: true
+ *       type: string
+ *     - name: endDate
  *       description: The date to begin
- *       in: formData 
- *       required: true 
- *       type: string 
- *     responses:  
- *       200: 
- *         description: OK  
- *       400: 
- *         description: Bad Request  
- *   
+ *       in: formData
+ *       required: true
+ *       type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ *       400:
+ *         description: Bad Request
+ *
  */
  router.route("/:requestId").get(getRequestById).post(updateSitterRequest);
 
