@@ -15,7 +15,6 @@ dotenv.config();
 import './App.css';
 
 function App(): JSX.Element {
-  console.log('the value of dummy is ', process.env.REACT_APP_DUMMY);
   return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>

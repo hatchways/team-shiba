@@ -1,11 +1,5 @@
 const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
-const profileModel = require('../models/Profile');
-
-const currentDate = new Date();
-const [month, day, year] = [currentDate.getMonth() , currentDate.getDate(), currentDate.getFullYear()];
-const date = `${day}-${month}-${year}`;
-console.log("the current date is " , date);
 
 exports.createProfile = asyncHandler(async (req, res, next) => {
 
@@ -32,7 +26,7 @@ exports.createProfile = asyncHandler(async (req, res, next) => {
 exports.getProfileById = asyncHandler(async (req, res, next) => {
   const profileID = req.params.id;
   try {
-    const foundProfile = await profileModel.findById({ _id: profileID });
+    const foundProfile = await Profile.findById({ _id: profileID });
     if (!foundProfile) {
       return res.status(404).json({ status: "profile not found!!" });
     }
@@ -47,7 +41,7 @@ exports.getProfileById = asyncHandler(async (req, res, next) => {
 
 exports.getProfilesList = asyncHandler(async (req, res, next) => {
   try {
-    const profiles = await profileModel.find({});
+    const profiles = await Profile.find({});
     if (profiles.length === 0) {
       return res.status(404).json({ status: "no profiles in records!!" });
     }
@@ -64,7 +58,7 @@ exports.updateProfileById = asyncHandler(async (req, res, next) => {
   const profileID = req.params.id;
   const { firstname, lastname, description } = req.body;
   try {
-    const updatedProfile = await profileModel.findByIdAndUpdate(profileID, {
+    const updatedProfile = await Profile.findByIdAndUpdate(profileID, {
       firstname,
       lastname,
       description,
