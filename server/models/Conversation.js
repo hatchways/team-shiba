@@ -1,6 +1,7 @@
 // conversation schema
 /*
   Conversation
+    -> title : string
     -> conversationID : ObjectId
     -> messages : [ message ]
     -> participants : [ user ]
@@ -8,9 +9,8 @@
 
 /*
   Message
-    -> messageID
-    -> senderID
-    -> receiverID
+    -> senderID : [User]
+    -> receiverID : [User]
     -> data
     -> attachment (url, pdf, document)
 */
