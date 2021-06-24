@@ -89,7 +89,6 @@ export default function ProfilePhoto() {
       .getProfilePhoto(dummUserId)
       .then((profilePhotoResponse) => {
         setUserProfilePhoto(profilePhotoResponse.data);
-        console.log({ profilePhotoResponse });
       })
       .catch((error) => {
         console.log({ error });
