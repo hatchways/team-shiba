@@ -36,18 +36,20 @@ class CloudinaryService{
           });
     }
 
-
-    replace = (fileId, newFile) => {
-  
-    }
-
-
     /**
    * This method deletes a file from cloudinary using its public ID
    * @param {*} fileId
    * returns a promise
    */
     delete = (fileId) => cloudinary.uploader.destroy(fileId);
+
+    
+
+    
+    replace = (fileId, newFile) => {
+  
+    }
+
   
 
 }

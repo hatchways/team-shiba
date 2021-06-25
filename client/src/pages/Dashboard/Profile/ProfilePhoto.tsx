@@ -14,6 +14,7 @@ import Grid from '@material-ui/core/Grid';
 import { JSXElement } from '@babel/types';
 import profileService from '../../../services/profileService';
 import { CircularProgress } from '@material-ui/core';
+import swal from 'sweetalert2';
 
 const dummUserId = '60ca6b79375d322274dda01f'; // change this when you figure authcontext
 
@@ -50,7 +51,7 @@ const useStyles = makeStyles(({ palette }) => ({
 export default function ProfilePhoto() {
   const styles = useStyles();
 
-  const [userProfilePhoto, setUserProfilePhoto] = useState({ fileUrl: 'https://i.pravatar.cc/300', filePublicId: '' });
+  const [userProfilePhoto, setUserProfilePhoto] = useState({ fileUrl: '', filePublicId: '' });
   const [selectedPhoto, setPhoto] = useState({ name: null });
   const [loading, setLoading] = useState(false);
 
@@ -100,6 +101,7 @@ export default function ProfilePhoto() {
    */
   const deleteProfilePhoto = (event: any) => {
     event.preventDefault();
+    if (!userProfilePhoto || !userProfilePhoto.filePublicId) return;
     const doDelete = () =>
       profileService
         .deleteProfilePhoto(userProfilePhoto.filePublicId)
@@ -111,7 +113,20 @@ export default function ProfilePhoto() {
           console.log({ error });
         });
 
-    userProfilePhoto.filePublicId && doDelete();
+    swal
+      .fire({
+        title: 'Remove photo',
+        text: 'You are about to delete your profile photo',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#007BFF',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes!',
+        cancelButtonText: 'No',
+      })
+      .then((result) => {
+        if (result.value) doDelete();
+      });
   };
 
   return (
