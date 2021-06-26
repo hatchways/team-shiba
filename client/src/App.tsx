@@ -7,6 +7,7 @@ import Login from './pages/Login/Login';
 import Signup from './pages/SignUp/SignUp';
 import Profile from './pages/Profile/Profile';
 import Dashboard from './pages/Dashboard/Dashboard';
+import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
@@ -29,6 +30,7 @@ function App(): JSX.Element {
                 <Route exact path="/signup" component={Signup} />
                 <Route exact path="/profile" component={Profile} />
                 <Route exact path="/profile-photo" component={ProfilePhoto} />
+                <Route exact path="/profileDetails" component={ProfileDetails} />
                 <Route exact path="/dashboard">
                   <Dashboard />
                 </Route>

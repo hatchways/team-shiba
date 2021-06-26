@@ -35,7 +35,7 @@ const { uploadSingle, uploadMultiple,
 router.route("/single").post([fileUploader.single('singleFile')],uploadSingle);
 
 /** 
- * @swagger 
+ * @swagger
  * /uploads/multiple: 
  *   post: 
  *     description: Uploads multiple files
