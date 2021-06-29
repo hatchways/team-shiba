@@ -1,6 +1,6 @@
 const cloudinary = require("cloudinary").v2;
 const streamifier = require('streamifier');
-const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
+const { MY_CLOUDINARY_CLOUD_NAME, MY_CLOUDINARY_API_KEY, MY_CLOUDINARY_API_SECRET } = process.env;
 
 
 
@@ -11,9 +11,9 @@ class CloudinaryService{
 
     constructor(){
         cloudinary.config({
-            cloud_name: CLOUDINARY_CLOUD_NAME, 
-            api_key: CLOUDINARY_API_KEY, 
-            api_secret: CLOUDINARY_API_SECRET
+            cloud_name: MY_CLOUDINARY_CLOUD_NAME, 
+            api_key: MY_CLOUDINARY_API_KEY, 
+            api_secret: MY_CLOUDINARY_API_SECRET
         });
     }
 
@@ -35,7 +35,6 @@ class CloudinaryService{
             streamifier.createReadStream(buffer).pipe(uploadStream);
           });
     }
-
 
     replace = (fileId, newFile) => {
   
