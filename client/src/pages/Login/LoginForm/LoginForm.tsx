@@ -50,7 +50,6 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
         updateSnackBarMessage('An unexpected error occurred. Please try again');
       }
     });
-    alert('Demo Login Works');
   };
 
   return (
