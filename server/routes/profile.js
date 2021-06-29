@@ -9,7 +9,7 @@ const {
 } = require("../controllers/profile");
 
 // CREATE
-router.route("/").post(createProfile);
+router.route("/create").post(createProfile);
 
 // READ
 router.route("/:id").get(getProfileById);
