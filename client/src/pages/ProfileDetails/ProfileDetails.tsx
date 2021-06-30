@@ -12,15 +12,11 @@ import LocationOnSharpIcon from '@material-ui/icons/LocationOnSharp';
 import { useEffect, useState } from 'react';
 import Rating from '@material-ui/lab/Rating';
 import profileService from '../../services/profileService';
-import { TextField } from '@material-ui/core';
+import { Box, TextField } from '@material-ui/core';
 const dummUserId = '60ca6b79375d322274dda01f';
 
 export default function ProfileDetails(): JSX.Element {
   const classes = useStyles();
-
-  const getBackgroundPhoto = () => {
-    //
-  };
 
   const getProfilePhoto = () => {
     profileService
@@ -39,7 +35,6 @@ export default function ProfileDetails(): JSX.Element {
   useEffect(() => {
     getProfilePhoto();
   }, []);
-  console.log('this is the public url', process.env.PUBLIC_URL);
   return (
     <Grid container spacing={4} className={classes.root} direction="row">
       <CssBaseline />
@@ -79,63 +74,65 @@ export default function ProfileDetails(): JSX.Element {
         </Card>
       </Grid>
       <Grid container item className={classes.request} direction="column">
-        <Typography className={classes.price} variant="h5" component="h3">
-          $14/hr
-        </Typography>
-        <Rating className={classes.rating} name="user-rating" value={rating} />
-        <form className={classes.container} noValidate>
-          <label htmlFor="DROP OFF" className={classes.formLabel}>
-            DROP IN
-          </label>
-          <div className={classes.dateTimeSubSection}>
-            <TextField
-              type="date"
-              defaultValue="2021-05-24"
-              className={classes.dateField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <TextField
-              type="time"
-              defaultValue="07:30"
-              className={classes.timeField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                step: 300, // 5 min
-              }}
-            />
-          </div>
-          <label htmlFor="DROP OFF" className={classes.formLabel}>
-            DROP OFF
-          </label>
-          <div className={classes.dateTimeSubSection}>
-            <TextField
-              type="date"
-              defaultValue="2021-05-24"
-              className={classes.dateField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <TextField
-              type="time"
-              defaultValue="07:30"
-              className={classes.timeField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                step: 300, // 5 min
-              }}
-            />
-          </div>
-          <Button color="secondary" className={classes.formButton} variant="contained">
-            SEND REQUEST
-          </Button>
-        </form>
+        <Card className={classes.card}>
+          <Typography className={classes.price} variant="h5" component="h3">
+            $14/hr
+          </Typography>
+          <Rating className={classes.rating} name="read-only" value={rating} />
+          <form className={classes.container} noValidate>
+            <label htmlFor="DROP OFF" className={classes.formLabel}>
+              DROP IN
+            </label>
+            <Box className={classes.dateTimeSubSection}>
+              <TextField
+                type="date"
+                defaultValue="2021-05-24"
+                className={classes.dateField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <TextField
+                type="time"
+                defaultValue="07:30"
+                className={classes.timeField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  step: 300, // 5 min
+                }}
+              />
+            </Box>
+            <label htmlFor="DROP OFF" className={classes.formLabel}>
+              DROP OFF
+            </label>
+            <Box className={classes.dateTimeSubSection}>
+              <TextField
+                type="date"
+                defaultValue="2021-05-24"
+                className={classes.dateField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <TextField
+                type="time"
+                defaultValue="07:30"
+                className={classes.timeField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  step: 300, // 5 min
+                }}
+              />
+            </Box>
+            <Button color="secondary" className={classes.formButton} variant="contained">
+              SEND REQUEST
+            </Button>
+          </form>
+        </Card>
       </Grid>
     </Grid>
   );

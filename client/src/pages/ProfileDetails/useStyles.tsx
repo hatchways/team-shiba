@@ -26,7 +26,6 @@ const useStyles = makeStyles(({ palette }) => ({
     height: '450px',
     margin: '50px',
     marginLeft: 0,
-    backgroundColor: 'white',
   },
   cardMedia: {
     height: '300px',
@@ -38,7 +37,6 @@ const useStyles = makeStyles(({ palette }) => ({
     boxShadow: '10px 10px 10px rgba(68, 68, 68, 0.6)',
   },
   card: {
-    // borderRadius: 12,
     minWidth: 256,
     minHeight: 400,
     textAlign: 'center',
@@ -113,36 +111,28 @@ const useStyles = makeStyles(({ palette }) => ({
     margin: 10,
   },
   formLabel: {
-    marginLeft: 10,
+    margin: '10px 0 0 10px',
     fontWeight: 'bold',
-    marginTop: 10,
   },
   textField: {
-    // marginLeft: theme.spacing(0),
-    // marginRight: theme.spacing(0),
     width: 180,
     border: '1px solid #e5e5e5',
     borderRadius: 5,
   },
   dateField: {
-    // marginLeft: theme.spacing(0),
-    // marginRight: theme.spacing(0),
     width: 160,
     padding: '10px',
     border: '1px solid #e5e5e5',
     borderRadius: 5,
   },
   timeField: {
-    // marginLeft: theme.spacing(0),
-    // marginRight: theme.spacing(0),
     width: 120,
     padding: '10px',
     border: '1px solid #e5e5e5',
     borderRadius: 5,
   },
   formButton: {
-    margin: '0 auto',
-    marginTop: 40,
+    margin: '40px auto',
   },
 }));
 
