@@ -264,7 +264,7 @@ export default function Booking() {
         </Grid>
         <Grid item xs={6} sm={6} lg={6}>
           <div className="calendar-box">
-            {/* <MuiPickersUtilsProvider utils={MomentUtils}>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
               <DatePicker
                 disableToolbar
                 open={true}
@@ -277,7 +277,7 @@ export default function Booking() {
                 onChange={handleDateChange}
                 TextFieldComponent={() => null}
               />
-            </MuiPickersUtilsProvider> */}
+            </MuiPickersUtilsProvider>
           </div>
         </Grid>
       </Grid>
