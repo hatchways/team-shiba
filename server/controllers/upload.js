@@ -44,7 +44,7 @@ const setProperties = (upload, data) => {
   upload.user = userId;
   upload.fileType = fileType;
   upload.fileName = fileName;
-  upload.filePublicId = `${fileName}${userId}`;
+  upload.filePublicId = `${fileName}-${userId}`;
   return upload;
 };
 
@@ -71,14 +71,13 @@ const saveUpload = async (upload, data) => {
       await cursor.delete(filePublicId); // delete from cloudinary
     } catch (error) {
       //do nothing, since it may not exist
-
     }
   };
-  const trySave = async () => isDuplicate ? isDuplicate.save() : await upload.save();
+  const trySave = async () =>
+    isDuplicate ? isDuplicate.save() : await upload.save();
 
-    await tryDeletes();
-    return await trySave();
-
+  await tryDeletes();
+  return await trySave();
 };
 
 /**
@@ -183,7 +182,6 @@ exports.uploadMultiple = asyncHandler(async (req, res, next) => {
  */
 exports.getProfileUpload = asyncHandler(async (req, res, next) => {
   const { entityId } = req.params;
-  console.log({ entityId });
   const profilePhoto = await Upload.findOne({
     user: entityId,
     isProfilePhoto: true,

@@ -11,7 +11,11 @@ import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
+import ProtectedRoute from './routes/ProtectedRoute';
+import React, { useState } from 'react';
 import ProfilePhoto from './pages/Dashboard/Profile/ProfilePhoto';
+import Booking from './pages/Dashboard/Booking/Booking';
+
 import dotenv from 'dotenv';
 dotenv.config();
 import './App.css';
@@ -28,14 +32,13 @@ function App(): JSX.Element {
                 <Route exact path="/" component={Landing} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/signup" component={Signup} />
+                <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                 <Route exact path="/profile" component={Profile} />
                 <Route exact path="/profile-photo" component={ProfilePhoto} />
                 <Route exact path="/profile-details" component={ProfileDetails} />
-                <Route exact path="/dashboard">
-                  <Dashboard />
-                </Route>
+                <Route exact path="/booking" component={Booking} />
                 <Route path="*">
-                  <Redirect to="/" />
+                  <Redirect to="/signup" />
                 </Route>
               </Switch>
             </SocketProvider>

@@ -15,21 +15,33 @@ import { JSXElement } from '@babel/types';
 import profileService from '../../../services/profileService';
 import { CircularProgress } from '@material-ui/core';
 import swal from 'sweetalert2';
+import { deepOrange, deepPurple } from '@material-ui/core/colors';
 
 const dummUserId = '60ca6b79375d322274dda01f'; // change this when you figure authcontext
 
 const useStyles = makeStyles(({ palette }) => ({
   card: {
     // borderRadius: 12,
-    minWidth: 256,
-    minHeight: 400,
-    textAlign: 'center',
-    boxShadow: '10px 10px 10px rgba(68, 68, 68, 0.6)',
+    width: 500,
+    minHeight: 200,
+    boxShadow: '2px 2px 2px 2px rgba(68, 68, 68, 0.6)',
+  },
+  rightCard: {
+    // borderRadius: 12,
+    width: 400,
+    height: 400,
+    boxShadow: '2px 2px 2px 2px rgba(68, 68, 68, 0.6)',
+  },
+  currentBookings: {
+    // borderRadius: 12,
+    overflowY: 'scroll',
+    maxHeight: 600,
   },
   avatar: {
-    width: 100,
-    height: 100,
-    margin: 'auto',
+    width: 50,
+    height: 50,
+    backgroundColor: deepOrange[500],
+    // margin: 'auto',
   },
   heading: {
     fontSize: 18,
@@ -48,7 +60,7 @@ const useStyles = makeStyles(({ palette }) => ({
   },
 }));
 
-export default function ProfilePhoto() {
+export default function Booking() {
   const styles = useStyles();
 
   const [userProfilePhoto, setUserProfilePhoto] = useState({ fileUrl: '', filePublicId: '' });
@@ -130,66 +142,73 @@ export default function ProfilePhoto() {
   };
 
   return (
-    <Box mt={5}>
+    <Box m={3}>
       <Grid container spacing={3}>
-        <Grid item xs={3} sm={3} lg={3}></Grid>
         <Grid item xs={6} sm={6} lg={6}>
-          <Card className={cx(styles.card)}>
-            <h2>Profile Photo</h2>
-            {/* <Typography component="h1">Profile Photo</Typography> */}
-            <CardContent>
-              <Avatar className={styles.avatar} src={userProfilePhoto?.fileUrl} />
-              <Box mt={2} px={3}>
-                <Box>
-                  <Typography className={styles.subheader} component="b">
-                    Be sure to use a photo that clearly shows your face.
-                  </Typography>
-                </Box>
+          <Box m={1}>
+            <Card className={cx(styles.card)}>
+              <Box m={1}>
+                <h6>YOUR NEXT BOOKING:</h6>
               </Box>
-            </CardContent>
+              <Box>
+                <h4>5 April 2020, 10 - 12AM </h4>
+              </Box>
 
-            <Box mt={2}>
-              <form encType="multipart/form-data" onSubmit={uploadPhoto}>
-                <input
-                  accept="image/*"
-                  className={styles.input}
-                  id="contained-button-file"
-                  name="singleFile"
-                  onChange={selectPhoto}
-                  type="file"
-                />
-                <label htmlFor="contained-button-file">
-                  <Button variant="outlined" disabled={loading} size="large" color="secondary" component="span">
-                    <Typography>{selectedPhoto?.name || 'Upload a file from your device'}</Typography>
-                  </Button>
-                </label>
-                {selectedPhoto?.name && (
-                  <Box m={1}>
-                    <Button
-                      disabled={loading}
-                      onClick={uploadPhoto}
-                      variant="outlined"
-                      size="large"
-                      color="primary"
-                      component="span"
-                    >
-                      {loading ? <CircularProgress /> : <Typography>Save</Typography>}
-                    </Button>
-                  </Box>
-                )}
-              </form>
-            </Box>
-            <Box mt={2}>
-              <IconButton aria-label="delete" color="default" onClick={deleteProfilePhoto}>
-                <Box pr={2}>
-                  <DeleteIcon />
-                </Box>
-                <Typography component="span">Delete photo</Typography>
-              </IconButton>
-            </Box>
-          </Card>
+              <Box mt={2}>
+                <Grid container spacing={0}>
+                  <Grid item xs={3} sm={3} lg={3}>
+                    <Avatar className={styles.avatar}>AN</Avatar>
+                  </Grid>
+                  <Grid item xs={9} sm={9} lg={9}>
+                    <Box mt={2}>
+                      <b>Emeka Ehirim</b>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Card>
+          </Box>
+          <Box m={1}>
+            <Card className={cx(styles.card)}>
+              <Box m={1}>
+                <h6>CURRENT BOOKINGS:</h6>
+              </Box>
+              <Box p={2} className={styles.currentBookings}>
+                {['AB', 'CD', 'EF', 'GH', 'IJ', 'KL'].map((initial) => {
+                  return (
+                    <Box mb={2} key={initial}>
+                      <Card>
+                        <Box p={2}>
+                          <Box>
+                            <h4>5 April 2020, 10 - 12AM </h4>
+                          </Box>
+
+                          <Box mt={2}>
+                            <Grid container spacing={0}>
+                              <Grid item xs={3} sm={3} lg={3}>
+                                <Avatar className={styles.avatar}>{initial}</Avatar>
+                              </Grid>
+                              <Grid item xs={9} sm={9} lg={9}>
+                                <Box mt={2}>
+                                  <b>Emeka Ehirim</b>
+                                </Box>
+                              </Grid>
+                            </Grid>
+                          </Box>
+                        </Box>
+                      </Card>
+                    </Box>
+                  );
+                })}
+              </Box>
+            </Card>
+          </Box>
         </Grid>
-        <Grid item xs={3} sm={3} lg={3}></Grid>
+        <Grid item xs={6} sm={6} lg={6}>
+          <Box m={1}>
+            <Card className={styles.rightCard}></Card>
+          </Box>
+        </Grid>
       </Grid>
     </Box>
   );
