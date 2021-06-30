@@ -7,6 +7,7 @@ import Login from './pages/Login/Login';
 import Signup from './pages/SignUp/SignUp';
 import Profile from './pages/Profile/Profile';
 import Dashboard from './pages/Dashboard/Dashboard';
+import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
@@ -34,8 +35,8 @@ function App(): JSX.Element {
                 <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                 <Route exact path="/profile" component={Profile} />
                 <Route exact path="/profile-photo" component={ProfilePhoto} />
+                <Route exact path="/profile-details" component={ProfileDetails} />
                 <Route exact path="/booking" component={Booking} />
-                
                 <Route path="*">
                   <Redirect to="/signup" />
                 </Route>

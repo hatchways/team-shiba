@@ -39,6 +39,16 @@ class ProfileService {
     const url = `uploads/profile-photo/${fileId}`;
     return apiHandler.del(url);
   };
+
+  /**
+   * This method gets the user's profile details
+   *  @param userId
+   * @returns
+   */
+  public static getProfileDetails = (userId: string): Promise<any> => {
+    const url = `profile/${userId}`;
+    return apiHandler.get(url);
+  };
 }
 
 export default ProfileService;
