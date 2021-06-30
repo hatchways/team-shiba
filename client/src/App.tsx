@@ -32,7 +32,6 @@ function App(): JSX.Element {
                 <Route exact path="/profile" component={ProfileDashboard} />
                 <Route exact path="/profile-photo" component={ProfilePhoto} />
                 <Route exact path="/booking" component={Booking} />
-                
                 <Route exact path="/dashboard">
                   <Dashboard />
                 </Route>

@@ -8,6 +8,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from './CheckoutFrom';
 import Button from '@material-ui/core/Button';
 import dotenv from 'dotenv';
+import { Box } from '@material-ui/core';
 dotenv.config();
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +42,7 @@ export default function AddPayMethod(): JSX.Element {
 
   const stripePromise = loadStripe(process.env.REACT_APP_PUBLISH_KEY!);
   return (
-    <div style={{ padding: '1em' }}>
+    <Box style={{ padding: '1em' }}>
       <Button variant="outlined" color="secondary" onClick={handleOpen}>
         Add New Payment Profile
       </Button>
@@ -65,6 +66,6 @@ export default function AddPayMethod(): JSX.Element {
           </div>
         </Fade>
       </Modal>
-    </div>
+    </Box>
   );
 }

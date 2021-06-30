@@ -1,6 +1,5 @@
 import { Paper } from '@material-ui/core';
 import { Grid } from '@material-ui/core';
-import React from 'react';
 
 const SavePayment = (): JSX.Element => {
   const url = `https://www.pngarts.com/files/3/Mastercard-Logo-PNG-Image-Background.png`;
