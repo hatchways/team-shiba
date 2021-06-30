@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import 'date-fns';
+import React, { useState, useEffect, useRef } from 'react';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
 import cx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -16,6 +21,17 @@ import profileService from '../../../services/profileService';
 import { CircularProgress } from '@material-ui/core';
 import swal from 'sweetalert2';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
+import TextField from '@material-ui/core/TextField';
+import { MuiPickersUtilsProvider, KeyboardDatePicker, DatePicker } from '@material-ui/pickers';
+import SettingsIcon from '@material-ui/icons/Settings';
+import MomentUtils from '@date-io/moment';
+import './Booking.css';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
 
 const dummUserId = '60ca6b79375d322274dda01f'; // change this when you figure authcontext
 
@@ -23,8 +39,11 @@ const useStyles = makeStyles(({ palette }) => ({
   card: {
     // borderRadius: 12,
     width: 500,
-    minHeight: 200,
+    // minHeight: 200,
     boxShadow: '2px 2px 2px 2px rgba(68, 68, 68, 0.6)',
+  },
+  settings: {
+    float: 'right',
   },
   rightCard: {
     // borderRadius: 12,
@@ -32,10 +51,15 @@ const useStyles = makeStyles(({ palette }) => ({
     height: 400,
     boxShadow: '2px 2px 2px 2px rgba(68, 68, 68, 0.6)',
   },
+  calendar: {
+    width: 600,
+    height: 600,
+  },
   currentBookings: {
     // borderRadius: 12,
     overflowY: 'scroll',
     maxHeight: 600,
+    width: '100%',
   },
   avatar: {
     width: 50,
@@ -60,85 +84,132 @@ const useStyles = makeStyles(({ palette }) => ({
   },
 }));
 
+const BookSettings = ({ id, booking }: { id: string; booking: any }) => {
+  const styles = useStyles();
+  const [open, setOpen] = useState(false);
+  const anchorRef: any = useRef(null);
+
+  const handleToggle = ({ isOpen }: { isOpen: boolean }) => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event: any) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const handleListKeyDown = (event: any) => {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    }
+  };
+
+  return (
+    <Box className={styles.settings}>
+      <IconButton aria-label="settings" onClick={() => handleToggle(booking)}>
+        <SettingsIcon color="disabled" />
+      </IconButton>
+
+      <div>
+        <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+          {({ TransitionProps, placement }) => (
+            <Grow {...TransitionProps} style={{ transformOrigin: 'center top', float: 'right' }}>
+              <Paper>
+                <ClickAwayListener onClickAway={handleClose}>
+                  <MenuList autoFocusItem={open} id={`menu-list-grow_${id}`} onKeyDown={handleListKeyDown}>
+                    <MenuItem onClick={handleClose} color="success">
+                      Accept
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>Deny</MenuItem>
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+      </div>
+    </Box>
+  );
+};
+
+const BookingItem = (props: any) => {
+  const styles = useStyles();
+  const { header, bookingDate, avatarName, sitter, showHeader, elevate } = props;
+  const bookSettings = {
+    id: avatarName,
+    bookingDate,
+    avatarName,
+    sitter,
+    booking: {},
+  };
+  const Children = () => {
+    return (
+      <Box pb={2} pr={2} pl={2}>
+        <Box>
+          {showHeader && <BookSettings {...bookSettings} />}
+          <h4>{bookingDate}</h4>
+        </Box>
+
+        <Box>
+          <Grid container spacing={0}>
+            <Grid item xs={3} sm={3} lg={3}>
+              <Avatar className={styles.avatar} src="https://i.pravatar.cc/300"></Avatar>
+            </Grid>
+            <Grid item xs={9} sm={9} lg={9}>
+              <Box mt={2}>
+                <b>{sitter}</b>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    );
+  };
+  return (
+    <>
+      <Box mb={2}>
+        {elevate ? (
+          <Card>
+            <Children />
+          </Card>
+        ) : (
+          <Children />
+        )}
+      </Box>
+    </>
+  );
+};
+
 export default function Booking() {
   const styles = useStyles();
+  const [currentBooking, setCurrentBooking] = useState({});
 
-  const [userProfilePhoto, setUserProfilePhoto] = useState({ fileUrl: '', filePublicId: '' });
-  const [selectedPhoto, setPhoto] = useState({ name: null });
   const [loading, setLoading] = useState(false);
+  const [dateValue, setDateValue] = useState(new Date('08/18/2014'));
+
+  const handleDateChange = (event: any) => {
+    // const { name, value } = event.target;
+    console.log({ event });
+  };
 
   useEffect(() => {
-    getProfilePhoto();
+    console.log('BOOKING LOADED');
   }, []);
 
-  const selectPhoto = (event: any) => {
-    const file = event.target.files[0];
-    setPhoto(file);
-  };
-
-  /**
-   * This method uploads a new profile photo
-   */
-  const uploadPhoto = (event: any) => {
-    event.preventDefault();
-    setLoading(true);
-    profileService
-      .uploadProfilePhoto(dummUserId, selectedPhoto)
-      .then((photoResponse) => {
-        setUserProfilePhoto(photoResponse.data);
-        setPhoto({ name: null });
-        setLoading(false);
-      })
-      .catch((error) => {
-        setLoading(false);
-      });
-  };
-
-  /**
-   * This method retrieves a user's profile photo
-   */
-  const getProfilePhoto = () => {
-    profileService
-      .getProfilePhoto(dummUserId)
-      .then((profilePhotoResponse) => {
-        setUserProfilePhoto(profilePhotoResponse.data);
-      })
-      .catch((error) => {
-        console.log({ error });
-      });
-  };
-
-  /**
-   * This method deletes a user's profile photo
-   */
-  const deleteProfilePhoto = (event: any) => {
-    event.preventDefault();
-    if (!userProfilePhoto || !userProfilePhoto.filePublicId) return;
-    const doDelete = () =>
-      profileService
-        .deleteProfilePhoto(userProfilePhoto.filePublicId)
-        .then((profilePhotoResponse) => {
-          setUserProfilePhoto(profilePhotoResponse.data);
-          console.log({ profilePhotoResponse });
-        })
-        .catch((error) => {
-          console.log({ error });
-        });
-
-    swal
-      .fire({
-        title: 'Remove photo',
-        text: 'You are about to delete your profile photo',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#007BFF',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes!',
-        cancelButtonText: 'No',
-      })
-      .then((result) => {
-        if (result.value) doDelete();
-      });
+  const bookingProps = {
+    header: 'XXX',
+    bookingDate: '5 April 2020, 10 - 12AM',
+    avatarName: 'EE',
+    sitter: 'Ehirim Emeka',
+    showHeader: false,
+    elevate: false,
+    key: 1,
+    booking: {},
+    id: 'next_booking',
   };
 
   return (
@@ -147,67 +218,67 @@ export default function Booking() {
         <Grid item xs={6} sm={6} lg={6}>
           <Box m={1}>
             <Card className={cx(styles.card)}>
+              <BookSettings {...bookingProps} />
               <Box m={1}>
                 <h6>YOUR NEXT BOOKING:</h6>
               </Box>
               <Box>
-                <h4>5 April 2020, 10 - 12AM </h4>
-              </Box>
-
-              <Box mt={2}>
-                <Grid container spacing={0}>
-                  <Grid item xs={3} sm={3} lg={3}>
-                    <Avatar className={styles.avatar}>AN</Avatar>
-                  </Grid>
-                  <Grid item xs={9} sm={9} lg={9}>
-                    <Box mt={2}>
-                      <b>Emeka Ehirim</b>
-                    </Box>
-                  </Grid>
-                </Grid>
+                <BookingItem {...bookingProps} />
               </Box>
             </Card>
           </Box>
-          <Box m={1}>
-            <Card className={cx(styles.card)}>
-              <Box m={1}>
-                <h6>CURRENT BOOKINGS:</h6>
-              </Box>
-              <Box p={2} className={styles.currentBookings}>
-                {['AB', 'CD', 'EF', 'GH', 'IJ', 'KL'].map((initial) => {
-                  return (
-                    <Box mb={2} key={initial}>
-                      <Card>
-                        <Box p={2}>
-                          <Box>
-                            <h4>5 April 2020, 10 - 12AM </h4>
-                          </Box>
 
-                          <Box mt={2}>
-                            <Grid container spacing={0}>
-                              <Grid item xs={3} sm={3} lg={3}>
-                                <Avatar className={styles.avatar}>{initial}</Avatar>
-                              </Grid>
-                              <Grid item xs={9} sm={9} lg={9}>
-                                <Box mt={2}>
-                                  <b>Emeka Ehirim</b>
-                                </Box>
-                              </Grid>
-                            </Grid>
-                          </Box>
-                        </Box>
-                      </Card>
-                    </Box>
-                  );
-                })}
-              </Box>
-            </Card>
+          <Box m={1}>
+            <Accordion className={cx(styles.card)} defaultExpanded={true}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+                <h6>CURRENT BOOKINGS:</h6>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Box p={2} className={styles.currentBookings}>
+                  {['AB', 'CD', 'EF', 'GH', 'IJ', 'KL'].map((initial) => {
+                    bookingProps.avatarName = initial;
+                    bookingProps.elevate = true;
+                    bookingProps.showHeader = true;
+
+                    return <BookingItem {...bookingProps} key={initial} />;
+                  })}
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion className={cx(styles.card)}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+                <h6>PAST BOOKINGS:</h6>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Box p={2} className={styles.currentBookings}>
+                  {['AB', 'CD', 'EF', 'GH', 'IJ', 'KL'].map((initial) => {
+                    bookingProps.avatarName = initial;
+                    bookingProps.elevate = true;
+                    bookingProps.showHeader = true;
+                    return <BookingItem {...bookingProps} key={initial} />;
+                  })}
+                </Box>
+              </AccordionDetails>
+            </Accordion>
           </Box>
         </Grid>
         <Grid item xs={6} sm={6} lg={6}>
-          <Box m={1}>
-            <Card className={styles.rightCard}></Card>
-          </Box>
+          <div className="calendar-box">
+            {/* <MuiPickersUtilsProvider utils={MomentUtils}>
+              <DatePicker
+                disableToolbar
+                open={true}
+                variant="inline"
+                format="MM/dd/yyyy"
+                margin="normal"
+                id="date-picker-inline"
+                label="Date picker inline"
+                value={dateValue}
+                onChange={handleDateChange}
+                TextFieldComponent={() => null}
+              />
+            </MuiPickersUtilsProvider> */}
+          </div>
         </Grid>
       </Grid>
     </Box>

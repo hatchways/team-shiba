@@ -162,6 +162,8 @@ exports.uploadMultiple = asyncHandler(async (req, res, next) => {
       messages;
     res.status(HTTP_CONSTANTS.BAD_REQUEST);
     throw new Error(message);
+
+    
   }
   let responseData = { data: [], message, hasError: !!errors.length };
   await bulkSave(uploads)
