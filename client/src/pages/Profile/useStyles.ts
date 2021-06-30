@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { findByLabelText } from '@testing-library/react';
 
 const useStyles = makeStyles((theme) => ({
   profileBackground: {
