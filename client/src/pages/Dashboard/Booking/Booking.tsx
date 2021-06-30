@@ -17,7 +17,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import { JSXElement } from '@babel/types';
-import profileService from '../../../services/profileService';
+import bookingService from '../../../services/bookingService';
 import { CircularProgress } from '@material-ui/core';
 import swal from 'sweetalert2';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
@@ -32,8 +32,10 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
+import { formatTDate } from '../../../shared/utils';
 
 const dummUserId = '60ca6b79375d322274dda01f'; // change this when you figure authcontext
+const today = formatTDate(new Date().toISOString());
 
 const useStyles = makeStyles(({ palette }) => ({
   card: {
@@ -161,7 +163,14 @@ const BookingItem = (props: any) => {
             </Grid>
             <Grid item xs={9} sm={9} lg={9}>
               <Box mt={2}>
-                <b>{sitter}</b>
+                <Grid container>
+                  <Grid item xs={8} sm={8} lg={8}>
+                    <b>{sitter}</b>
+                  </Grid>
+                  <Grid item xs={4} sm={4} lg={4}>
+                    <Typography color="textSecondary">ACCEPTED</Typography>
+                  </Grid>
+                </Grid>
               </Box>
             </Grid>
           </Grid>
@@ -186,18 +195,43 @@ const BookingItem = (props: any) => {
 
 export default function Booking() {
   const styles = useStyles();
-  const [currentBooking, setCurrentBooking] = useState({});
+  const [userType, setUserType] = useState('owner');
+  const [nextBooking, setNextBooking] = useState({});
+  const [currentBookings, setCurrentBookings] = useState([]);
+  const [pastBookings, setPastBookings] = useState([]);
+  const [allBookings, setAllBookings] = useState([]);
 
   const [loading, setLoading] = useState(false);
-  const [dateValue, setDateValue] = useState(new Date('08/18/2014'));
+  const [dateValue, setDateValue] = useState(new Date(today));
 
+  const getAllBookings = async () => {
+    await setUserType('owner'); // this would be retrieved from the logged in user object
+    bookingService
+      .getRequestsByUserId(userType, dummUserId)
+      .then((requestResponse) => {
+        let { data } = requestResponse;
+        const next: any[] = [],
+          current: any[] = [],
+          past: any[] = [];
+        data = data.map((datum: any) => {
+          const { endDate } = datum;
+          return datum;
+        });
+        setAllBookings(data);
+        console.log({ requestResponse });
+      })
+      .catch((error) => {
+        console.log({ error });
+      });
+  };
   const handleDateChange = (event: any) => {
     // const { name, value } = event.target;
     console.log({ event });
   };
 
   useEffect(() => {
-    console.log('BOOKING LOADED');
+    getAllBookings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const bookingProps = {

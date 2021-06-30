@@ -21,6 +21,9 @@ exports.getRequestById = asyncHandler(async (req, res, next) => {
 // This is for an owner. It returns requests they have made
 exports.getRequestsByOwnerId = asyncHandler(async (req, res, next) => {
   const { ownerId } = req.params;
+  console.log({
+    ownerId
+  })
   try {
     const data = await Request.find({ owner: ownerId }).populate("sitter");
     res.status(HTTP_CONSTANTS.OK).json({ data });
