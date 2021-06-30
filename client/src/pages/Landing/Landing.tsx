@@ -9,7 +9,6 @@ import Logo from '../../Images/logo.png';
 import Button from '@material-ui/core/Button';
 import NavLinks from './NavLinks/NavLinks';
 import DatePickers from './DatePickers/DatePickers';
-import { Link } from 'react-router-dom';
 
 export default function Landing(): JSX.Element {
   const classes = useStyles();
@@ -43,7 +42,7 @@ export default function Landing(): JSX.Element {
                 </Box>
                 <Box paddingTop="3em">
                   <Button color="inherit" variant="contained" className={classes.submit}>
-                    <Link to="/profile"> FIND MY DOG SITTER </Link>
+                    FIND MY DOG SITTER
                   </Button>
                 </Box>
               </Grid>
