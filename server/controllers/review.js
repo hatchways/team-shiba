@@ -7,16 +7,14 @@ const ObjectId = require("mongodb").ObjectId;
 // @desc Add review
 // @access Private
 exports.createReview = asyncHandler(async (req, res, next) => {
-  const profileId = req.params.profileId;
-  const reviewerId = req.params.reviewerId;
+  const reviewerId = req.params.profileId;
 
   try {
-    const profile = await Profile.findById(profileId);
     const reviewer = await Review.findById(reviewerId);
 
     if (reviewer.includes(req.body.author)) {
       reviewer.comments.push(req.body);
-      reviewer.save((error, convo) => {
+      reviewer.save((error) => {
         if (error) {
           return res.status(400).json({
             error: error.message,
@@ -25,7 +23,7 @@ exports.createReview = asyncHandler(async (req, res, next) => {
         return res.json({ success: true, msg: "Review Added" });
       });
     } else {
-      res.status(400).send("Reviewer isn't a account holder!");
+      res.status(400).send("Technical issues!");
     }
   } catch (err) {
     res.status(400).send(err);
